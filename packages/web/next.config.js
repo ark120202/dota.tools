@@ -2,8 +2,8 @@
 const _ = require('lodash');
 const withTypescript = require('@zeit/next-typescript');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const api = require('../files/vscripts/api');
-const enums = require('../files/vscripts/enums');
+const api = require('dota-data/files/vscripts/api');
+const enums = require('dota-data/files/vscripts/enums');
 
 module.exports = withTypescript({
   distDir: '../.next',
@@ -11,7 +11,6 @@ module.exports = withTypescript({
    * @param {import('webpack').Configuration} config
    */
   webpack(config, options) {
-    config.resolve.alias['dota-data'] = __dirname + '/..';
     config.resolve.alias['~utils'] = __dirname + '/src/utils';
     config.resolve.alias['~components'] = __dirname + '/src/components';
 

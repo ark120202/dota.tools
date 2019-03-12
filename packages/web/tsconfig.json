@@ -11,9 +11,9 @@
 
     "baseUrl": "src",
     "paths": {
-      "dota-data/*": ["../../*"],
       "~components/*": ["components/*"],
       "~utils/*": ["utils/*"]
     }
-  }
+  },
+  "references": [{ "path": "../dota-data" }]
 }
