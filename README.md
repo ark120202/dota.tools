@@ -1,9 +1,3 @@
-# dota-data
+# [dota.tools](https://dota.tools)
 
-> Auto-generated Dota 2 resource dumps
-
-Data from these packages is available on [dota-data web page](https://dota-data.netlify.com).
-
-## Packages
-
-- [dota-data](packages/dota-data/README.md)
+A set of online tools for Dota 2 Custom Game development.
