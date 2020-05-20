@@ -29,7 +29,7 @@
     "@types/react-dom": "^16.9.4",
     "@types/react-virtualized": "^9.21.6",
     "@types/styled-components": "^4.4.0",
-    "dota-data": "0.9.2",
+    "dota-data": "0.9.3",
     "lodash": "^4.17.15",
     "polished": "^3.4.2",
     "react": "^16.12.0",
