@@ -1,15 +1,13 @@
 import api from 'dota-data/files/vscripts/api';
 import { findTypeByName } from 'dota-data/lib/helpers/vscripts';
 import React, { useMemo } from 'react';
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { ColoredSyntax, ColoredSyntaxKind, getSyntaxColorFor } from '~components/ColoredSyntax';
-import { ActiveLink } from '~components/Link';
 import { colors } from '~utils/constants';
 import LambdaIcon from './lambda.svg';
 
-const TypeReferenceLink = styled(ActiveLink)`
-  color: ${colors.text};
-
+const TypeReferenceLink = styled(NavLink)`
   &.active {
     text-decoration: none;
   }
@@ -34,14 +32,15 @@ const TypeReference: React.FC<{ name: string }> = ({ name }) => {
   }, [name]);
 
   const urlHash = hash ? `#${hash}` : '';
-  return (
-    <TypeReferenceLink
-      to={scope ? { pathname: '/vscripts', query: { scope }, hash } : undefined}
-      toPath={scope ? `/vscripts/${scope}${urlHash}` : undefined}
-      style={{ textDecorationColor: getSyntaxColorFor(kind) }}
-    >
+  const style: React.CSSProperties = { textDecorationColor: getSyntaxColorFor(kind) };
+  return scope ? (
+    <TypeReferenceLink to={`/vscripts/${scope}${urlHash}`} style={style}>
       <ColoredSyntax kind={kind}>{name}</ColoredSyntax>
     </TypeReferenceLink>
+  ) : (
+    <span style={style}>
+      <ColoredSyntax kind={kind}>{name}</ColoredSyntax>
+    </span>
   );
 };
 

@@ -1,8 +1,9 @@
 {
   "private": true,
   "scripts": {
-    "build": "next build src && next export src -o out",
-    "dev": "next src",
+    "analyze": "webpack --mode production --env.analyze",
+    "build": "webpack --mode production",
+    "dev": "webpack-dev-server --mode development",
     "lint": "run-p lint:prettier lint:eslint",
     "lint:eslint": "eslint . --ext .js,.ts,.tsx",
     "lint:prettier": "prettier --check **/*.{ts,tsx,js,md,yml,json}"
@@ -16,10 +17,15 @@
   "eslintConfig": {
     "extends": "@ark120202/eslint-config/node",
     "parserOptions": {
-      "project": "tsconfig.json"
+      "project": [
+        "tsconfig.json",
+        "src/tsconfig.json"
+      ]
     },
     "rules": {
-      "import/no-anonymous-default-export": "off"
+      "import/no-anonymous-default-export": "off",
+      "prefer-arrow/prefer-arrow-functions": "off",
+      "node/no-unsupported-features/node-builtins": "off"
     }
   },
   "dependencies": {
@@ -27,6 +33,7 @@
     "@types/node": "^12.12.14",
     "@types/react": "^16.9.14",
     "@types/react-dom": "^16.9.4",
+    "@types/react-router-dom": "^5.1.5",
     "@types/react-virtualized": "^9.21.6",
     "@types/styled-components": "^4.4.0",
     "dota-data": "0.9.4",
@@ -34,23 +41,47 @@
     "polished": "^3.4.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "react-router-dom": "^5.2.0",
     "react-virtualized": "^9.21.2",
     "styled-components": "^4.4.1"
   },
   "devDependencies": {
     "@ark120202/eslint-config": "^2.2.0",
     "@ark120202/typescript-config": "^2.1.0",
+    "@babel/core": "^7.10.2",
+    "@babel/plugin-proposal-class-properties": "^7.10.1",
+    "@babel/preset-env": "^7.10.2",
+    "@babel/preset-react": "^7.10.1",
+    "@babel/preset-typescript": "^7.10.1",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.3.3",
     "@svgr/webpack": "^4.3.3",
-    "@types/next": "^8.0.5",
-    "@zeit/next-typescript": "^1.1.1",
-    "babel-plugin-styled-components": "^1.10.6",
+    "@types/babel__core": "^7.1.8",
+    "@types/case-sensitive-paths-webpack-plugin": "^2.1.4",
+    "@types/copy-webpack-plugin": "^6.0.0",
+    "@types/html-webpack-plugin": "^3.2.3",
+    "@types/webpack": "^4.41.17",
+    "@types/webpack-bundle-analyzer": "^3.8.0",
+    "@types/webpack-dev-server": "^3.11.0",
+    "babel-loader": "^8.1.0",
+    "babel-plugin-styled-components": "^1.10.7",
+    "case-sensitive-paths-webpack-plugin": "^2.3.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^6.0.1",
+    "cross-env": "^7.0.2",
     "eslint": "^6.7.2",
     "eslint-plugin-react": "^7.17.0",
     "eslint-plugin-react-hooks": "^2.3.0",
-    "fork-ts-checker-webpack-plugin": "3.1.1",
-    "next": "^8.1.0",
+    "fork-ts-checker-webpack-plugin": "^4.1.6",
+    "html-webpack-plugin": "^4.3.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^1.19.1",
-    "typescript": "^3.7.3"
+    "react-refresh": "^0.8.3",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.7.3",
+    "url-loader": "^4.1.0",
+    "webpack": "^4.43.0",
+    "webpack-bundle-analyzer": "^3.8.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.11.0"
   }
 }

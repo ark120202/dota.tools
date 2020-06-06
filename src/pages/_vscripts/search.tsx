@@ -1,45 +1,28 @@
 import api from 'dota-data/files/vscripts/api';
 import enums from 'dota-data/files/vscripts/enums';
 import { getFuncDeepTypes } from 'dota-data/lib/helpers/vscripts';
-import qs from 'querystring';
-import { IS_CLIENT } from '~utils/constants';
-import { Router, useRouter } from '~utils/hooks';
+import { useHistory, useLocation } from 'react-router-dom';
 import { isNotNil } from '~utils/types';
 import { Declaration } from './data';
 
-export const setSearchQuery = (query: string) => {
-  if (query === '') {
-    const historyState = window.history.state.options;
-    // TODO: Use optional chaining
-    // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
-    const url = (historyState && historyState.beforeSearchUrl) || Router.pathname;
-    // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
-    const asPath = (historyState && historyState.beforeSearchAs) || Router.pathname;
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    Router.push(url, asPath);
-  } else {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    Router.push(`/vscripts?search=${encodeURIComponent(query)}`, undefined, {
-      beforeSearchUrl:
-        (window.history.state.options && window.history.state.options.beforeSearchUrl) ||
-        // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/38414
-        `${Router.pathname}?${qs.stringify(Router.query as any)}`,
-      beforeSearchAs:
-        (window.history.state.options && window.history.state.options.beforeSearchAs) ||
-        Router.asPath ||
-        '',
-    });
-  }
-};
+export function useRouterSearch() {
+  const location = useLocation();
+  return new URLSearchParams(location.search).get('search') ?? '';
+}
 
-export const useRouterSearch = () => {
-  let { query: { search = '' } = {} } = useRouter();
-  if (IS_CLIENT && search === '') {
-    search = String(qs.parse(window.location.search.slice(1)).search || '');
-  }
+export function useSetSearchQuery() {
+  const history = useHistory<{ searchReferrer?: string }>();
 
-  return search;
-};
+  return (query: string) => {
+    const { state, pathname, search } = history.location;
+    if (query === '') {
+      history.push(state?.searchReferrer || '/vscripts');
+    } else {
+      const searchReferrer = state?.searchReferrer || `${pathname}${search}`;
+      history.push(`/vscripts?search=${encodeURIComponent(query)}`, { searchReferrer });
+    }
+  };
+}
 
 export const doSearch = (data: Declaration[], words: string[]) => {
   const typeWords = words.filter(x => x.startsWith('type:')).map(x => x.replace(/^type:/, ''));

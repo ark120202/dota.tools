@@ -6,15 +6,13 @@ import {
   List,
   ListRowRenderer,
 } from 'react-virtualized';
-import { IS_CLIENT } from '~utils/constants';
 
 interface Props<T> {
   data: T[];
   render(element: T, style?: React.CSSProperties): React.ReactNode;
-  isLazy: boolean;
 }
 
-const LazyList = <T extends any>({ data, render }: Pick<Props<T>, 'data' | 'render'>) => {
+export function LazyList<T extends any>({ data, render }: Props<T>) {
   const cache = useMemo(() => new CellMeasurerCache({ fixedWidth: true }), [data]);
   const renderRow = useCallback<ListRowRenderer>(
     ({ key, parent, style, index }) => (
@@ -43,16 +41,12 @@ const LazyList = <T extends any>({ data, render }: Pick<Props<T>, 'data' | 'rend
       </AutoSizer>
     </div>
   );
-};
+}
 
-export const MaybeLazyList = <T extends any>({ data, render, isLazy }: Props<T>) => {
-  if (!isLazy) {
-    return (
-      <div style={{ flex: 1, overflowX: 'hidden', overflowY: 'scroll' }}>
-        {data.map(x => render(x))}
-      </div>
-    );
-  }
-
-  return IS_CLIENT ? <LazyList data={data} render={render} /> : null;
-};
+export function ScrollableList<T extends any>({ data, render }: Props<T>) {
+  return (
+    <div style={{ flex: 1, overflowX: 'hidden', overflowY: 'scroll' }}>
+      {data.map(x => render(x))}
+    </div>
+  );
+}

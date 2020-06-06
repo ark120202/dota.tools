@@ -1,7 +1,6 @@
 import enums from 'dota-data/files/vscripts/enums';
 import React from 'react';
 import styled from 'styled-components';
-import { useAnchor } from '~utils/hooks';
 import {
   CenteredKindIcon,
   CommonGroupHeader,
@@ -20,14 +19,17 @@ const ConstantSignature = styled(CommonGroupSignature)`
   font-size: 20px;
 `;
 
-export const Constant: React.FC<{
+export function Constant({
+  className,
+  style,
+  element,
+}: {
   className?: string;
   style?: React.CSSProperties;
   element: enums.Constant;
-}> = ({ className, style, element }) => {
-  const ref = useAnchor<HTMLDivElement>(element.name, true);
+}) {
   return (
-    <ConstantWrapper className={className} style={style} ref={ref}>
+    <ConstantWrapper className={className} style={style} id={element.name}>
       <ConstantHeader>
         <ConstantSignature>
           <CenteredKindIcon kind="constant" size="big" />
@@ -40,4 +42,4 @@ export const Constant: React.FC<{
       <OptionalDescription description={element.description} />
     </ConstantWrapper>
   );
-};
+}

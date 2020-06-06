@@ -2,8 +2,7 @@ import { darken } from 'polished';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { colors } from '~utils/constants';
-import { Router } from '~utils/hooks';
-import { setSearchQuery, useRouterSearch } from './search';
+import { useRouterSearch, useSetSearchQuery } from './search';
 import SearchIcon from './search.svg';
 
 export function useCtrlFHook<T extends HTMLElement>() {
@@ -59,16 +58,9 @@ const SearchButton = styled.button<{ isUpdated: boolean }>`
 `;
 
 export const SearchBox: React.FC<{ className?: string }> = React.memo(({ className }) => {
-  const ref = useCtrlFHook<HTMLInputElement>();
-
   const routerSearch = useRouterSearch();
   const [search, setSearch] = useState(routerSearch);
-  useEffect(() => {
-    // TODO: Use optional chaining
-    const listener = () => setSearch((Router.query || {}).search || '');
-    Router.events.on('routeChangeComplete', listener);
-    return () => Router.events.off('routeChangeComplete', listener);
-  }, []);
+  useEffect(() => setSearch(routerSearch), [routerSearch]);
 
   const updateCurrentSearch = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
     ({ target: { value } }) => setSearch(value),
@@ -79,6 +71,7 @@ export const SearchBox: React.FC<{ className?: string }> = React.memo(({ classNa
     [search],
   );
 
+  const setSearchQuery = useSetSearchQuery();
   const handleSearchButton = useCallback<React.MouseEventHandler<HTMLButtonElement>>(
     () => setSearchQuery(search),
     [search],
@@ -87,6 +80,8 @@ export const SearchBox: React.FC<{ className?: string }> = React.memo(({ classNa
     e => e.preventDefault(),
     [],
   );
+
+  const ref = useCtrlFHook<HTMLInputElement>();
 
   return (
     <SearchBoxWrapper className={className}>

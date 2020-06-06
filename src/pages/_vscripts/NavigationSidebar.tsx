@@ -1,12 +1,12 @@
 import { darken } from 'polished';
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { IconKind, KindIcon } from '~components/KindIcon';
-import { ActiveLink } from '~components/Link';
 import { colors } from '~utils/constants';
 import { topLevelData } from './data';
 
-const ElementLink = styled(ActiveLink)`
+const ElementLink = styled(NavLink)`
   padding: 2px;
   border: 1px solid black;
   background-color: ${colors.mainLight};
@@ -31,7 +31,7 @@ const OverviewListElement: React.FC<{
   icon: IconKind;
   text: string;
 }> = React.memo(({ to, icon, text }) => (
-  <ElementLink to={{ pathname: '/vscripts', query: { scope: to } }} toPath={`/vscripts/${to}`}>
+  <ElementLink to={`/vscripts/${to}`}>
     <KindIcon kind={icon} size="small" /> {text}
   </ElementLink>
 ));

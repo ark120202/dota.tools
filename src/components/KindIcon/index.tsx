@@ -7,7 +7,7 @@ import Method from './Method.svg';
 
 // https://code.visualstudio.com/docs/editor/intellisense#_types-of-completions
 export type IconKind = 'class' | 'enum' | 'constant' | 'field' | 'interface' | 'function';
-const iconToElementMap: Record<IconKind, typeof Class> = {
+const iconToElementMap: Record<IconKind, typeof import('*.svg').default> = {
   class: Class,
   enum: EnumItem,
   constant: EnumItem,

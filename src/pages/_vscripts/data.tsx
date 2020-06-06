@@ -1,7 +1,7 @@
 import api from 'dota-data/files/vscripts/api';
 import enums from 'dota-data/files/vscripts/enums';
 import _ from 'lodash';
-import { useRouter } from '~utils/hooks';
+import { useParams } from 'react-router-dom';
 import { doSearch, useRouterSearch } from './search';
 
 export type Declaration = typeof topLevelData[number];
@@ -11,22 +11,22 @@ export const topLevelData = [...api, ...enums].filter(
 
 export const useFilteredData = () => {
   const search = useRouterSearch();
-  const { query: { scope = '' } = {} } = useRouter();
+  const { scope = '' } = useParams<{ scope?: string }>();
 
-  let data = [...topLevelData];
   if (search) {
-    return { data: doSearch(data, search.toLowerCase().split(' ')), isSearching: true };
+    return { data: doSearch(topLevelData, search.toLowerCase().split(' ')), isSearching: true };
   }
 
+  let data: Declaration[];
   switch (scope) {
     case 'functions':
-      data = data.filter(x => x.kind === 'function');
+      data = topLevelData.filter(x => x.kind === 'function');
       break;
     case 'constants':
-      data = data.filter(x => x.kind === 'constant');
+      data = topLevelData.filter(x => x.kind === 'constant');
       break;
     default:
-      data = data.filter(x => x.name === scope);
+      data = topLevelData.filter(x => x.name === scope);
   }
 
   return { data, isSearching: false };

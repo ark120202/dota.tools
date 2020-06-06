@@ -1,8 +1,8 @@
 import { Availability } from 'dota-data/files/vscripts/api';
 import { darken } from 'polished';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import { ButtonLink, InactiveLink } from '~components/Link';
 import { colors } from '~utils/constants';
 import SearchGitHubIcon from './search-github.svg';
 import SearchGoogleIcon from './search-google.svg';
@@ -68,7 +68,7 @@ export const SearchInGoogle: React.FC<{ name: string }> = ({ name }) => {
   );
 };
 
-const FindReferencesButtonLink = styled(ButtonLink)`
+const FindReferencesLink = styled(Link)`
   background-color: ${darken(0.05, colors.mainLight)};
   color: ${colors.text};
   border: 1px solid black;
@@ -76,19 +76,13 @@ const FindReferencesButtonLink = styled(ButtonLink)`
   padding: 4px 6px;
   font-size: 16px;
 `;
+
 export const FindReferencesButton: React.FC<{ name: string }> = ({ name }) => {
-  const search = `type:${name}`;
-  return (
-    <FindReferencesButtonLink
-      to={{ pathname: '/vscripts', query: { search } }}
-      toPath={`/vscripts?search=${search}`}
-    >
-      Find References
-    </FindReferencesButtonLink>
-  );
+  const to = `/vscripts?search=${encodeURIComponent(`type:${name}`)}`;
+  return <FindReferencesLink to={to}>Find References</FindReferencesLink>;
 };
 
-const StyledElementLink = styled(InactiveLink)`
+const StyledElementLink = styled(Link)`
   font-size: 26px;
   line-height: 1;
   text-decoration: none;
@@ -98,12 +92,5 @@ const StyledElementLink = styled(InactiveLink)`
 
 export const ElementLink: React.FC<{ scope: string; hash?: string }> = ({ scope, hash }) => {
   const urlHash = hash ? `#${hash}` : '';
-  return (
-    <StyledElementLink
-      to={{ pathname: '/vscripts', query: { scope, hash } }}
-      toPath={`/vscripts/${scope}${urlHash}`}
-    >
-      #
-    </StyledElementLink>
-  );
+  return <StyledElementLink to={`/vscripts/${scope}${urlHash}`}>#</StyledElementLink>;
 };

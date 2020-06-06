@@ -1,8 +1,7 @@
 /* eslint-disable unicorn/filename-case */
-import dynamic from 'next/dynamic';
 import React from 'react';
 import styled from 'styled-components';
-import { MaybeLazyList } from '~components/MaybeLazyList';
+import { LazyList, ScrollableList } from '~components/Lists';
 import { Declaration, useFilteredData } from './data';
 import { SearchBox } from './SearchBox';
 import { ClassDeclaration } from './types/top/ClassDeclaration';
@@ -49,20 +48,16 @@ const renderItem = (declaration: Declaration, style?: React.CSSProperties): Reac
   }
 };
 
-const SearchList = dynamic<{ data: Declaration[] }>(
-  Promise.resolve(({ data }) =>
-    data.length > 0 ? (
-      <MaybeLazyList isLazy={true} data={data} render={renderItem} />
-    ) : (
-      <TextMessage>No results found</TextMessage>
-    ),
-  ),
-  { ssr: false, loading: () => null },
-);
+const SearchList: React.FC<{ data: Declaration[] }> = ({ data }) =>
+  data.length > 0 ? (
+    <LazyList data={data} render={renderItem} />
+  ) : (
+    <TextMessage>No results found</TextMessage>
+  );
 
 const ExploreList: React.FC<{ data: Declaration[] }> = ({ data }) =>
   data.length > 0 ? (
-    <MaybeLazyList isLazy={false} data={data} render={renderItem} />
+    <ScrollableList data={data} render={renderItem} />
   ) : (
     <TextMessage>Choose a category or use the search bar...</TextMessage>
   );

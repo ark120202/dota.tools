@@ -2,9 +2,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { colors } from '~utils/constants';
-// import { ActiveLink } from '../Link';
 
-// const NavBarLink = styled(ActiveLink)`
+// const NavBarLink = styled(NavLink)`
 //   background-color: ${darken(0.05, colors.mainLight)};
 //   padding: 10px 12px;
 //   color: ${colors.text};

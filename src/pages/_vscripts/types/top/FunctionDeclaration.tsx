@@ -1,7 +1,6 @@
 import api from 'dota-data/files/vscripts/api';
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
-import { useAnchor } from '~utils/hooks';
 import { getInterfacesForTypes } from '../../data';
 import {
   AvailabilityBadge,
@@ -58,9 +57,8 @@ export const FunctionDeclaration: React.FC<{
     [],
   );
 
-  const ref = useAnchor<HTMLDivElement>(declaration.name, Boolean(context));
   return (
-    <FunctionWrapper className={className} style={style} ref={ref}>
+    <FunctionWrapper className={className} style={style} id={declaration.name}>
       <FunctionHeader>
         <FunctionSignature>
           <CenteredKindIcon kind="function" size="big" />
