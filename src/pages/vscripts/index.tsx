@@ -1,7 +1,7 @@
 import React from 'react';
-import { APIList } from './_vscripts/APIList';
-import { NavigationSidebar } from './_vscripts/NavigationSidebar';
-import { RouterHashScroll } from '../utils/scroll';
+import { RouterHashScroll } from '~utils/scroll';
+import { APIList } from './APIList';
+import { NavigationSidebar } from './NavigationSidebar';
 
 export default function VScriptsPage() {
   return (
