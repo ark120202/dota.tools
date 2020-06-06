@@ -52,17 +52,17 @@ export const SearchOnGitHub: React.FC<{ name: string }> = ({ name }) => {
   const query = encodeURIComponent(`path:vscripts ${name}`);
   const href = `https://github.com/search?l=Lua&q=${query}&type=Code`;
   return (
-    <a target="_blank" href={href} title="Search on GitHub">
+    <a target="_blank" rel="noreferrer noopener" href={href} title="Search on GitHub">
       <SearchGitHubIcon width={30} height={30} />
     </a>
   );
 };
 
-export const SearchInGoogle: React.FC<{ name: string }> = ({ name }) => {
+export const SearchOnGoogle: React.FC<{ name: string }> = ({ name }) => {
   const query = encodeURIComponent(`site:github.com inurl:vscripts "${name}"`);
   const href = `https://www.google.com/search?q=${query}`;
   return (
-    <a target="_blank" href={href} title="Search on GitHub">
+    <a target="_blank" rel="noreferrer noopener" href={href} title="Search on Google">
       <SearchGoogleIcon width={30} height={30} />
     </a>
   );

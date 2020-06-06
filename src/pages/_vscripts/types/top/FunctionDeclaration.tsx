@@ -11,8 +11,8 @@ import {
   ElementBadges,
   ElementLink,
   OptionalDescription,
-  SearchInGoogle,
   SearchOnGitHub,
+  SearchOnGoogle,
 } from '../common';
 import { InterfaceDeclaration } from '../InterfaceDeclaration';
 import { FunctionParameter, Types } from '../types';
@@ -72,7 +72,7 @@ export const FunctionDeclaration: React.FC<{
         <ElementBadges>
           <AvailabilityBadge available={declaration.available} />
           <SearchOnGitHub name={declaration.name} />
-          <SearchInGoogle name={declaration.name} />
+          <SearchOnGoogle name={declaration.name} />
           {context && <ElementLink scope={context} hash={declaration.name} />}
         </ElementBadges>
       </FunctionHeader>
