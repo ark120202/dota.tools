@@ -2,7 +2,7 @@ import { TransformOptions } from '@babel/core';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
-// import CopyWebpackPlugin from 'copy-webpack-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import path from 'path';
@@ -69,7 +69,7 @@ export default (env: Record<string, any> = {}, argv: Configuration): Configurati
       new ForkTsCheckerWebpackPlugin({ tsconfig: tsconfigPath, async: !isProduction }),
 
       new CleanWebpackPlugin(),
-      // new CopyWebpackPlugin({ patterns: [resolve('public')] }),
+      new CopyWebpackPlugin({ patterns: [resolve('public')] }),
       new HtmlWebpackPlugin({
         template: resolve('src/index.html'),
         minify: { minifyCSS: true, minifyJS: true, removeComments: true, collapseWhitespace: true },
