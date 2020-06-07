@@ -23,7 +23,7 @@ import { colors } from '~utils/constants';
 //   </NavBarLink>
 // );
 
-const NavBarWrapper = styled.div`
+const NavBarWrapper = styled.nav`
   display: flex;
   background-color: ${colors.mainLight};
 `;

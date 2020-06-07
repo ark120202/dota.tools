@@ -91,11 +91,13 @@ export const SearchBox: React.FC<{ className?: string }> = React.memo(({ classNa
         value={search}
         onChange={updateCurrentSearch}
         onKeyUp={handleKey}
+        aria-label="Search"
       />
       <SearchButton
         isUpdated={search !== routerSearch}
         onClick={handleSearchButton}
         onMouseDown={handleSearchButtonMouseDown}
+        title="Search"
       >
         <SearchIcon width={25} height={25} />
       </SearchButton>

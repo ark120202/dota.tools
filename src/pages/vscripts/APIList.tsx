@@ -13,7 +13,7 @@ const StyledSearchBox = styled(SearchBox)`
   margin: 6px;
 `;
 
-const APIListWrapper = styled.div`
+const APIListWrapper = styled.main`
   flex: 1;
   height: 100%;
   display: flex;

@@ -38,10 +38,18 @@ export const AvailabilityBadge: React.FC<{ available: Availability }> = ({ avail
   const onClient = available === 'client' || available === 'both';
   return (
     <>
-      <AvailabilityBadgeBox color="#5b82ee" active={onServer}>
+      <AvailabilityBadgeBox
+        color="#5b82ee"
+        active={onServer}
+        title={`${onServer ? 'Available' : 'Unavailable'} on server-side Lua`}
+      >
         s
       </AvailabilityBadgeBox>
-      <AvailabilityBadgeBox color="#59df37" active={onClient}>
+      <AvailabilityBadgeBox
+        color="#59df37"
+        active={onClient}
+        title={`${onClient ? 'Available' : 'Unavailable'} on client-side Lua`}
+      >
         c
       </AvailabilityBadgeBox>
     </>
@@ -92,5 +100,9 @@ const StyledElementLink = styled(Link)`
 
 export const ElementLink: React.FC<{ scope: string; hash?: string }> = ({ scope, hash }) => {
   const urlHash = hash ? `#${hash}` : '';
-  return <StyledElementLink to={`/vscripts/${scope}${urlHash}`}>#</StyledElementLink>;
+  return (
+    <StyledElementLink to={`/vscripts/${scope}${urlHash}`} title="Link">
+      #
+    </StyledElementLink>
+  );
 };
