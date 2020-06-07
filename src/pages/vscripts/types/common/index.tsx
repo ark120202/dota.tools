@@ -1,11 +1,10 @@
 import styled from 'styled-components';
-import { KindIcon } from '~components/KindIcon';
-
-export const CenteredKindIcon = styled(KindIcon)`
-  vertical-align: middle;
-  margin: auto 0;
-  margin-right: 5px;
-`;
+import { KindIcon as UnstyledKindIcon } from '~components/KindIcon';
 
 export * from './badges';
 export * from './styles';
+
+export const KindIcon = styled(UnstyledKindIcon)`
+  margin-bottom: -4px;
+  margin-right: 4px;
+`;

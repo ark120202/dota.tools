@@ -2,12 +2,12 @@ import api from 'dota-data/files/vscripts/api';
 import React from 'react';
 import styled from 'styled-components';
 import {
-  CenteredKindIcon,
   CommonGroupHeader,
   CommonGroupSignature,
   CommonGroupWrapper,
   ElementBadges,
   ElementLink,
+  KindIcon,
 } from './common';
 import { Types } from './types';
 
@@ -27,7 +27,7 @@ export const Field: React.FC<{
   <FieldWrapper className={className}>
     <FieldHeader>
       <FieldSignature>
-        <CenteredKindIcon kind="field" size="big" />
+        <KindIcon kind="field" size="big" />
         {element.name}
         {element.types.includes('nil') && '?'}:{' '}
         {<Types types={element.types.filter(x => x !== 'nil')} />}

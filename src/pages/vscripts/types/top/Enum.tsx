@@ -3,15 +3,15 @@ import React from 'react';
 import styled from 'styled-components';
 import { ColoredSyntax } from '~components/ColoredSyntax';
 import {
-  CenteredKindIcon,
   CommonGroupHeader,
   CommonGroupMembers,
   CommonGroupSignature,
   CommonGroupWrapper,
   ElementBadges,
   ElementLink,
-  FindReferencesButton,
+  KindIcon,
   OptionalDescription,
+  ReferencesLink,
 } from '../common';
 
 const EnumMemberWrapper = styled(CommonGroupWrapper)`
@@ -51,11 +51,11 @@ export const Enum: React.FC<{
   <EnumWrapper className={className} style={style}>
     <EnumHeader>
       <EnumSignature>
-        <CenteredKindIcon kind="enum" size="big" />
+        <KindIcon kind="enum" size="big" />
         {element.name}
       </EnumSignature>
       <ElementBadges>
-        <FindReferencesButton name={element.name} />
+        <ReferencesLink name={element.name} />
         <ElementLink scope={element.name} />
       </ElementBadges>
     </EnumHeader>

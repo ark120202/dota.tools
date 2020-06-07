@@ -1,7 +1,5 @@
-export const IS_CLIENT = typeof window !== 'undefined';
-
 export const colors = {
-  background: '#596163',
+  background: '#4d5658',
   text: '#ffffff',
   searchButton: '#2196f3',
   // Blue Grey 200

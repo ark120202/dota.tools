@@ -14,15 +14,15 @@ const ElementLink = styled(NavLink)`
   color: ${colors.text};
 
   :not(:last-child) {
-    margin-top: 3px;
+    margin-bottom: 3px;
   }
 
   &:hover {
-    background-color: ${darken(0.1, colors.mainLight)};
+    background-color: ${darken(0.09, colors.mainLight)};
   }
 
   &.active {
-    background-color: ${darken(0.2, colors.mainLight)};
+    background-color: ${darken(0.16, colors.mainLight)};
   }
 `;
 
@@ -41,7 +41,7 @@ const OverviewListWrapper = styled.div`
   flex-flow: column;
   overflow-y: scroll;
   height: 100%;
-  padding: 4px 8px;
+  padding: 4px 6px;
 `;
 
 const OverviewList: React.FC = () => (

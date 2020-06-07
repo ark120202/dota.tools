@@ -1,7 +1,7 @@
 import api from 'dota-data/files/vscripts/api';
 import React from 'react';
 import styled from 'styled-components';
-import { CenteredKindIcon, CommonGroupMembers, CommonGroupWrapper } from './common';
+import { CommonGroupMembers, CommonGroupWrapper, KindIcon } from './common';
 import { Field } from './Field';
 
 const InterfaceWrapper = styled(CommonGroupWrapper)``;
@@ -31,7 +31,7 @@ export const InterfaceDeclaration: React.FC<{
 }> = ({ className, declaration }) => (
   <InterfaceWrapper className={className}>
     <InterfaceHeader>
-      <CenteredKindIcon kind="interface" size="small" />
+      <KindIcon kind="interface" size="small" />
       <InterfaceName>{declaration.name}</InterfaceName>
     </InterfaceHeader>
     {declaration.description && (

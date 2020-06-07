@@ -1,3 +1,4 @@
+import { darken, lighten } from 'polished';
 import React from 'react';
 import { render } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
@@ -15,6 +16,23 @@ const GlobalStyle = (() => {
       width: 100%;
       height: 100%;
       margin: 0;
+    }
+
+    ::-webkit-scrollbar {
+      width: 9px;
+
+      &-track {
+        background: ${darken(0.09, colors.background)};
+      }
+
+      &-thumb {
+        background: ${lighten(0.28, colors.background)};
+        border-radius: 4px;
+
+        &:hover {
+          background: ${lighten(0.24, colors.background)};
+        }
+      }
     }
   `;
 })();

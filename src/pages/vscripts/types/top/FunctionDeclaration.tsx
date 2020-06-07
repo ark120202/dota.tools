@@ -4,12 +4,12 @@ import styled from 'styled-components';
 import { getInterfacesForTypes } from '../../data';
 import {
   AvailabilityBadge,
-  CenteredKindIcon,
   CommonGroupHeader,
   CommonGroupSignature,
   CommonGroupWrapper,
   ElementBadges,
   ElementLink,
+  KindIcon,
   OptionalDescription,
   SearchOnGitHub,
   SearchOnGoogle,
@@ -22,10 +22,25 @@ const FunctionWrapper = styled(CommonGroupWrapper)`
 `;
 
 const FunctionHeader = styled(CommonGroupHeader)``;
-const FunctionSignature = styled(CommonGroupSignature)``;
+const FunctionSignature = styled(CommonGroupSignature)`
+  margin-bottom: 3px;
+`;
 
 const RelatedInterfaces = styled.div`
-  margin: 0 30px;
+  margin: 0 25px;
+`;
+
+const ParameterDescription = styled.li`
+  list-style: none;
+  margin-left: 8px;
+  line-height: 1.7;
+
+  code {
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 3px;
+    border-radius: 4px;
+    border: 1px solid black;
+  }
 `;
 
 export const FunctionDeclaration: React.FC<{
@@ -49,10 +64,10 @@ export const FunctionDeclaration: React.FC<{
       declaration.args
         .filter(arg => arg.description)
         .map(arg => (
-          <li key={arg.name}>
-            {arg.name}
+          <ParameterDescription key={arg.name}>
+            <code>{arg.name}</code>
             {` - ${arg.description}`}
-          </li>
+          </ParameterDescription>
         )),
     [],
   );
@@ -61,7 +76,7 @@ export const FunctionDeclaration: React.FC<{
     <FunctionWrapper className={className} style={style} id={declaration.name}>
       <FunctionHeader>
         <FunctionSignature>
-          <CenteredKindIcon kind="function" size="big" />
+          <KindIcon kind="function" size="big" />
           {declaration.name}(
           {declaration.args.map((x, i) => [
             <FunctionParameter key={x.name} name={x.name} types={x.types} />,

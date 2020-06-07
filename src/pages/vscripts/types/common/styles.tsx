@@ -25,7 +25,7 @@ export const CommonGroupSignature = styled.div`
 `;
 
 const DescriptionSeparator = styled.hr`
-  margin: 6px 10px;
+  margin: 3px 10px;
   background-color: ${colors.lightest};
 `;
 

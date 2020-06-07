@@ -2,12 +2,12 @@ import enums from 'dota-data/files/vscripts/enums';
 import React from 'react';
 import styled from 'styled-components';
 import {
-  CenteredKindIcon,
   CommonGroupHeader,
   CommonGroupSignature,
   CommonGroupWrapper,
   ElementBadges,
   ElementLink,
+  KindIcon,
   OptionalDescription,
 } from '../common';
 
@@ -32,7 +32,7 @@ export function Constant({
     <ConstantWrapper className={className} style={style} id={element.name}>
       <ConstantHeader>
         <ConstantSignature>
-          <CenteredKindIcon kind="constant" size="big" />
+          <KindIcon kind="constant" size="big" />
           {element.name}:&nbsp;{element.value}
         </ConstantSignature>
         <ElementBadges>
