@@ -13,6 +13,7 @@ import {
   OptionalDescription,
   SearchOnGitHub,
   SearchOnGoogle,
+  useLinkedElement,
 } from '../common';
 import { InterfaceDeclaration } from '../InterfaceDeclaration';
 import { FunctionParameter, Types } from '../types';
@@ -72,8 +73,10 @@ export const FunctionDeclaration: React.FC<{
     [],
   );
 
+  const isLinked = useLinkedElement({ scope: context, hash: declaration.name });
+
   return (
-    <FunctionWrapper className={className} style={style} id={declaration.name}>
+    <FunctionWrapper className={className} style={style} id={declaration.name} isLinked={isLinked}>
       <FunctionHeader>
         <FunctionSignature>
           <KindIcon kind="function" size="big" />

@@ -9,6 +9,7 @@ import {
   ElementLink,
   KindIcon,
   OptionalDescription,
+  useLinkedElement,
 } from '../common';
 
 const ConstantWrapper = styled(CommonGroupWrapper)`
@@ -28,8 +29,9 @@ export function Constant({
   style?: React.CSSProperties;
   element: enums.Constant;
 }) {
+  const isLinked = useLinkedElement({ scope: 'constants', hash: element.name });
   return (
-    <ConstantWrapper className={className} style={style} id={element.name}>
+    <ConstantWrapper className={className} style={style} id={element.name} isLinked={isLinked}>
       <ConstantHeader>
         <ConstantSignature>
           <KindIcon kind="constant" size="big" />

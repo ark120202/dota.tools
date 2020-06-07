@@ -1,12 +1,18 @@
+import { darken } from 'polished';
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { colors } from '~utils/constants';
 
-export const CommonGroupWrapper = styled.div`
+export const CommonGroupWrapper = styled.div<{ isLinked?: boolean }>`
   display: flex;
   flex-flow: column;
   border: 1px solid black;
   background-color: ${colors.mainLight};
+  ${props =>
+    props.isLinked &&
+    css`
+      background-color: ${darken(0.12, colors.mainLight)};
+    `}
 `;
 
 export const CommonGroupMembers = styled.div`

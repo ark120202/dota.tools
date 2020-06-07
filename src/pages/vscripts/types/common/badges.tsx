@@ -1,7 +1,7 @@
 import { Availability } from 'dota-data/files/vscripts/api';
 import { darken, lighten } from 'polished';
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { colors } from '~utils/constants';
 import SearchGitHubIcon from './search-github.svg';
@@ -132,3 +132,11 @@ export const ElementLink: React.FC<{ scope: string; hash?: string }> = ({ scope,
     </StyledElementLink>
   );
 };
+
+export function useLinkedElement({ scope, hash }: { scope?: string; hash?: string }) {
+  const urlHash = hash ? `#${hash}` : '';
+  const location = useLocation();
+  return (
+    scope !== undefined && location.pathname === `/vscripts/${scope}` && location.hash === urlHash
+  );
+}

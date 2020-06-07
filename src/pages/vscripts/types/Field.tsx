@@ -8,6 +8,7 @@ import {
   ElementBadges,
   ElementLink,
   KindIcon,
+  useLinkedElement,
 } from './common';
 import { Types } from './types';
 
@@ -23,18 +24,21 @@ export const Field: React.FC<{
   className?: string;
   context?: string;
   element: api.Field;
-}> = ({ className, context, element }) => (
-  <FieldWrapper className={className}>
-    <FieldHeader>
-      <FieldSignature>
-        <KindIcon kind="field" size="big" />
-        {element.name}
-        {element.types.includes('nil') && '?'}:{' '}
-        {<Types types={element.types.filter(x => x !== 'nil')} />}
-      </FieldSignature>
-      <ElementBadges>
-        {context && <ElementLink scope={context} hash={element.name} />}
-      </ElementBadges>
-    </FieldHeader>
-  </FieldWrapper>
-);
+}> = ({ className, context, element }) => {
+  const isLinked = useLinkedElement({ scope: context, hash: element.name });
+  return (
+    <FieldWrapper className={className} id={element.name} isLinked={isLinked}>
+      <FieldHeader>
+        <FieldSignature>
+          <KindIcon kind="field" size="big" />
+          {element.name}
+          {element.types.includes('nil') && '?'}:{' '}
+          {<Types types={element.types.filter(x => x !== 'nil')} />}
+        </FieldSignature>
+        <ElementBadges>
+          {context && <ElementLink scope={context} hash={element.name} />}
+        </ElementBadges>
+      </FieldHeader>
+    </FieldWrapper>
+  );
+};
