@@ -14,7 +14,7 @@ export const useFilteredData = () => {
   const { scope = '' } = useParams<{ scope?: string }>();
 
   if (search) {
-    return { data: doSearch(topLevelData, search.toLowerCase().split(' ')), isSearching: true };
+    return { data: doSearch(search.toLowerCase().split(' ')), isSearching: true };
   }
 
   let data: Declaration[];

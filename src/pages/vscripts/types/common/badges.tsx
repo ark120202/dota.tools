@@ -1,9 +1,10 @@
 import { Availability } from 'dota-data/files/vscripts/api';
 import { darken, lighten } from 'polished';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { colors } from '~utils/constants';
+import { doSearch } from '../../search';
 import SearchGitHubIcon from './search-github.svg';
 import SearchGoogleIcon from './search-google.svg';
 
@@ -103,13 +104,21 @@ const StyledReferencesLink = styled(NavLink)`
 
 export const ReferencesLink: React.FC<{ name: string }> = ({ name }) => {
   const search = `?search=${encodeURIComponent(`type:${name}`)}`;
+  const referencesCount = useMemo(() => {
+    const references = doSearch([`type:${name.toLowerCase()}`]);
+    return references.reduce(
+      (n, e) => n + (e.kind === 'class' ? e.members.length + (e.extend === name ? 1 : 0) : 1),
+      0,
+    );
+  }, [name]);
+
   return (
     <StyledReferencesLink
       to={`/vscripts${search}`}
       isActive={(_, location) => location.pathname === '/vscripts' && location.search === search}
       title="Find all usages of this API"
     >
-      References
+      {referencesCount} reference{referencesCount === 1 ? '' : 's'}
     </StyledReferencesLink>
   );
 };
