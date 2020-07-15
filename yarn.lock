@@ -4074,10 +4074,10 @@ dot-case@^3.0.3:
     no-case "^3.0.3"
     tslib "^1.10.0"
 
-dota-data@0.9.5:
-  version "0.9.5"
-  resolved "https://registry.yarnpkg.com/dota-data/-/dota-data-0.9.5.tgz#f221c5a7646705a37634dd105d53dc9068e49c30"
-  integrity sha512-1mWmZagGJMKo+0nbujHluJGtH67LUUqSyKv9jUGno7z6RtLO0SRq8nWWyrNpwTxq9oXQam8A+X1akrR0L1Wqyg==
+dota-data@0.9.6:
+  version "0.9.6"
+  resolved "https://registry.yarnpkg.com/dota-data/-/dota-data-0.9.6.tgz#230a44759a6ddbab9bf2ffe91d72f0c14b05dff1"
+  integrity sha512-ZCIrHLsdNaavfYJYhLprMh+3QDqnaKURk86tPxhK36huvGR/ElZ/bC9WFUhKAamuAjkPJaCPraJ28G2iqyJPyA==
   dependencies:
     fs-extra "^8.1.0"
     got "^10.0.1"
