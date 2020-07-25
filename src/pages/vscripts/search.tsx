@@ -3,7 +3,7 @@ import enums from 'dota-data/files/vscripts/enums';
 import { getFuncDeepTypes } from 'dota-data/lib/helpers/vscripts';
 import { useHistory, useLocation } from 'react-router-dom';
 import { isNotNil } from '~utils/types';
-import { topLevelData } from './data';
+import { Declaration, topLevelData } from './data';
 
 export function useRouterSearch() {
   const location = useLocation();
@@ -24,47 +24,82 @@ export function useSetSearchQuery() {
   };
 }
 
+const AVAILABILITY_PATTERN = /^-?on:(client|server)$/;
 export const doSearch = (words: string[]) => {
+  const availabilityWords = words.filter(x => AVAILABILITY_PATTERN.test(x));
   const typeWords = words.filter(x => x.startsWith('type:')).map(x => x.replace(/^type:/, ''));
-  const normalWords = words.filter(x => !x.startsWith('type:'));
+  const nameWords = words.filter(x => !x.startsWith('type:') && !AVAILABILITY_PATTERN.test(x));
 
-  const filterMember = (member: api.ClassMember | enums.EnumMember): boolean => {
+  function filterAvailability(member: { available: api.Availability } | {}) {
+    if (availabilityWords.length === 0) return undefined;
+    if (!('available' in member)) return false;
+
+    if (member.available === 'server') {
+      return availabilityWords.includes('on:server');
+    }
+
+    if (member.available === 'client') {
+      return availabilityWords.includes('on:client');
+    }
+
+    return !availabilityWords.includes('-on:server') && !availabilityWords.includes('-on:client');
+  }
+
+  function filterMemberType(member: api.ClassMember) {
+    if (typeWords.length === 0) return undefined;
+
+    const types = (member.kind === 'function' ? getFuncDeepTypes(member) : member.types).map(type =>
+      type.toLowerCase(),
+    );
+    return typeWords.every(type => types.some(x => x.includes(type)));
+  }
+
+  function filterDeclarationType(declaration: Declaration) {
+    if (typeWords.length === 0) return undefined;
+
+    return (
+      declaration.kind === 'class' &&
+      declaration.extend !== undefined &&
+      typeWords.includes(declaration.extend.toLowerCase())
+    );
+  }
+
+  function filterName(member: { name: string }) {
+    if (nameWords.length === 0) return undefined;
+
     const name = member.name.toLowerCase();
-    return normalWords.length > 0 && normalWords.every(word => name.includes(word));
+    return nameWords.every(word => name.includes(word));
+  }
+
+  const composeFilters = <T,>(filters: ((member: T) => boolean | undefined)[]) => (value: T) => {
+    const results = filters.map(fn => fn(value));
+    if (results.includes(false)) return false;
+    if (results.includes(true)) return true;
+    return false;
   };
 
   return topLevelData
     .map(declaration => {
-      const filteredDeclaration: api.ClassDeclaration | enums.Enum | undefined =
+      const partialDeclaration: api.ClassDeclaration | enums.Enum | undefined =
         declaration.kind === 'class'
           ? {
               ...declaration,
-              members: declaration.members.filter(member => {
-                if (filterMember(member)) return true;
-
-                if (typeWords.length === 0) return false;
-                const memberTypes = (member.kind === 'function'
-                  ? getFuncDeepTypes(member)
-                  : member.types
-                ).map(type => type.toLowerCase());
-                return typeWords.every(type => memberTypes.some(x => x.includes(type)));
-              }),
+              members: declaration.members.filter(
+                composeFilters([filterName, filterAvailability, filterMemberType]),
+              ),
             }
           : declaration.kind === 'enum'
-          ? { ...declaration, members: declaration.members.filter(filterMember) }
+          ? {
+              ...declaration,
+              members: declaration.members.filter(composeFilters([filterName, filterAvailability])),
+            }
           : undefined;
 
-      // TODO: Use optional chaining
-      if (filteredDeclaration && filteredDeclaration.members.length > 0) return filteredDeclaration;
+      if (partialDeclaration && partialDeclaration.members.length > 0) {
+        return partialDeclaration;
+      }
 
-      const includeAsType =
-        (normalWords.length > 0 &&
-          normalWords.every(word => declaration.name.toLowerCase().includes(word))) ||
-        (declaration.kind === 'class' &&
-          declaration.extend &&
-          typeWords.includes(declaration.extend.toLowerCase()));
-
-      if (includeAsType) {
+      if (composeFilters([filterName, filterAvailability, filterDeclarationType])(declaration)) {
         const element = { ...declaration };
         if (element.kind === 'class' || element.kind === 'enum') element.members = [];
         return element;
