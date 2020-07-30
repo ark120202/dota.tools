@@ -1,21 +1,19 @@
 import api from 'dota-data/files/vscripts/api';
 import React from 'react';
 import styled from 'styled-components';
+import { ElementLink, KindIcon, useLinkedElement } from './utils/components';
 import {
   CommonGroupHeader,
   CommonGroupSignature,
   CommonGroupWrapper,
   ElementBadges,
-  ElementLink,
-  KindIcon,
-  useLinkedElement,
-} from './common';
-import { Types } from './types';
+} from './utils/styles';
+import { Types } from './utils/types';
 
 const FieldWrapper = styled(CommonGroupWrapper)`
   padding: 4px;
 `;
-const FieldHeader = styled(CommonGroupHeader)``;
+
 const FieldSignature = styled(CommonGroupSignature)`
   font-size: 20px;
 `;
@@ -28,7 +26,7 @@ export const Field: React.FC<{
   const isLinked = useLinkedElement({ scope: context, hash: element.name });
   return (
     <FieldWrapper className={className} id={element.name} isLinked={isLinked}>
-      <FieldHeader>
+      <CommonGroupHeader>
         <FieldSignature>
           <KindIcon kind="field" size="big" />
           {element.name}
@@ -38,7 +36,7 @@ export const Field: React.FC<{
         <ElementBadges>
           {context && <ElementLink scope={context} hash={element.name} />}
         </ElementBadges>
-      </FieldHeader>
+      </CommonGroupHeader>
     </FieldWrapper>
   );
 };

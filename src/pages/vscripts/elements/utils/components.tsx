@@ -3,18 +3,15 @@ import { darken, lighten } from 'polished';
 import React, { useMemo } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import styled, { css } from 'styled-components';
+import { KindIcon as UnstyledKindIcon } from '~components/KindIcon';
 import { colors } from '~utils/constants';
-import { doSearch } from '../../search';
+import { doSearch } from '../../data';
 import SearchGitHubIcon from './search-github.svg';
 import SearchGoogleIcon from './search-google.svg';
 
-export const ElementBadges = styled.div`
-  align-self: flex-start;
-  display: flex;
-  align-items: center;
-  > * {
-    margin-left: 5px;
-  }
+export const KindIcon = styled(UnstyledKindIcon)`
+  margin-bottom: -4px;
+  margin-right: 4px;
 `;
 
 const AvailabilityBadgeBox = styled.div<{ color: string; active: boolean }>`

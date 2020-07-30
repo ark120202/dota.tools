@@ -2,32 +2,27 @@ import api from 'dota-data/files/vscripts/enums';
 import React from 'react';
 import styled from 'styled-components';
 import { ColoredSyntax } from '~components/ColoredSyntax';
+import { ElementLink, KindIcon, ReferencesLink } from './utils/components';
 import {
   CommonGroupHeader,
   CommonGroupMembers,
   CommonGroupSignature,
   CommonGroupWrapper,
   ElementBadges,
-  ElementLink,
-  KindIcon,
   OptionalDescription,
-  ReferencesLink,
-} from '../common';
+} from './utils/styles';
 
 const EnumMemberWrapper = styled(CommonGroupWrapper)`
   padding: 2px 5px;
 `;
 
-const EnumMemberHeader = styled(CommonGroupHeader)``;
-const EnumMemberSignature = styled(CommonGroupSignature)``;
-
 const EnumMember: React.FC<api.EnumMember> = props => (
   <EnumMemberWrapper>
-    <EnumMemberHeader>
-      <EnumMemberSignature>
+    <CommonGroupHeader>
+      <CommonGroupSignature>
         {props.name} = <ColoredSyntax kind="literal">{props.value}</ColoredSyntax>
-      </EnumMemberSignature>
-    </EnumMemberHeader>
+      </CommonGroupSignature>
+    </CommonGroupHeader>
     <OptionalDescription description={props.description} />
   </EnumMemberWrapper>
 );
@@ -35,8 +30,7 @@ const EnumMember: React.FC<api.EnumMember> = props => (
 const EnumHeader = styled(CommonGroupHeader)`
   padding: 5px;
 `;
-const EnumSignature = styled(CommonGroupSignature)``;
-const EnumWrapper = styled(CommonGroupWrapper)``;
+
 const EnumMembers = styled(CommonGroupMembers)`
   > :not(:last-child) {
     margin-bottom: 2px;
@@ -48,12 +42,12 @@ export const Enum: React.FC<{
   style?: React.CSSProperties;
   element: api.Enum;
 }> = ({ className, style, element }) => (
-  <EnumWrapper className={className} style={style}>
+  <CommonGroupWrapper className={className} style={style}>
     <EnumHeader>
-      <EnumSignature>
+      <CommonGroupSignature>
         <KindIcon kind="enum" size="big" />
         {element.name}
-      </EnumSignature>
+      </CommonGroupSignature>
       <ElementBadges>
         <ReferencesLink name={element.name} />
         <ElementLink scope={element.name} />
@@ -67,5 +61,5 @@ export const Enum: React.FC<{
         ))}
       </EnumMembers>
     )}
-  </EnumWrapper>
+  </CommonGroupWrapper>
 );

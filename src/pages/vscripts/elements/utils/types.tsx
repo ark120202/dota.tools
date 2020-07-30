@@ -5,7 +5,16 @@ import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { ColoredSyntax, ColoredSyntaxKind, getSyntaxColorFor } from '~components/ColoredSyntax';
 import { colors } from '~utils/constants';
-import LambdaIcon from './lambda.svg';
+import ArrowIcon from './arrow.svg';
+
+export const Types: React.FC<{ types: api.Type[] }> = ({ types }) => (
+  <>
+    {types.map((type, index) => [
+      <Type key={index} type={type} />,
+      types.length - 1 !== index && ' | ',
+    ])}
+  </>
+);
 
 const TypeReferenceLink = styled(NavLink)`
   &.active {
@@ -59,15 +68,6 @@ const Type: React.FC<{ type: api.Type }> = ({ type }) =>
     <FunctionType {...type} />
   );
 
-export const Types: React.FC<{ types: api.Type[] }> = ({ types }) => (
-  <>
-    {types.map((type, index) => [
-      <Type key={index} type={type} />,
-      types.length - 1 !== index && ' | ',
-    ])}
-  </>
-);
-
 export const FunctionParameter: React.FC<{ name: string; types: api.Type[] }> = ({
   name,
   types,
@@ -78,18 +78,18 @@ export const FunctionParameter: React.FC<{ name: string; types: api.Type[] }> = 
   </span>
 );
 
-const FunctionLambdaIcon = styled(LambdaIcon).attrs({ height: 17, width: 28 })`
-  path {
-    fill: ${colors.text};
-  }
-`;
-
 const FunctionType: React.FC<api.FunctionType> = props => (
   <span>
     (
     {props.args.map(x => (
       <FunctionParameter key={x.name} {...x} />
     ))}
-    ) <FunctionLambdaIcon /> <Types types={props.returns} />
+    ) <FunctionArrowIcon /> <Types types={props.returns} />
   </span>
 );
+
+const FunctionArrowIcon = styled(ArrowIcon).attrs({ height: 17, width: 28 })`
+  path {
+    fill: ${colors.text};
+  }
+`;

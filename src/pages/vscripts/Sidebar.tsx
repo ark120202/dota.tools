@@ -6,7 +6,7 @@ import { IconKind, KindIcon } from '~components/KindIcon';
 import { colors } from '~utils/constants';
 import { topLevelData } from './data';
 
-const ElementLink = styled(NavLink)`
+const SidebarLink = styled(NavLink)`
   padding: 2px;
   border: 1px solid black;
   background-color: ${colors.mainLight};
@@ -26,45 +26,34 @@ const ElementLink = styled(NavLink)`
   }
 `;
 
-const OverviewListElement: React.FC<{
+const SidebarElement: React.FC<{
   to: string;
   icon: IconKind;
   text: string;
 }> = React.memo(({ to, icon, text }) => (
-  <ElementLink to={`/vscripts/${to}`}>
+  <SidebarLink to={`/vscripts/${to}`}>
     <KindIcon kind={icon} size="small" /> {text}
-  </ElementLink>
+  </SidebarLink>
 ));
 
-const OverviewListWrapper = styled.div`
+const SidebarWrapper = styled.div`
+  width: 20%;
+  height: 100%;
+  box-sizing: border-box;
   display: flex;
   flex-flow: column;
   overflow-y: scroll;
-  height: 100%;
   padding: 4px 6px;
 `;
 
-const OverviewList: React.FC = () => (
-  <OverviewListWrapper>
-    <OverviewListElement to="functions" icon="function" text="Functions" />
-    <OverviewListElement to="constants" icon="constant" text="Constants" />
+export const Sidebar = React.memo(() => (
+  <SidebarWrapper>
+    <SidebarElement to="functions" icon="function" text="Functions" />
+    <SidebarElement to="constants" icon="constant" text="Constants" />
     {topLevelData
       .filter(x => x.kind === 'class' || x.kind === 'enum')
       .map(({ name, kind }) => (
-        <OverviewListElement key={name} to={name} icon={kind} text={name} />
+        <SidebarElement key={name} to={name} icon={kind} text={name} />
       ))}
-  </OverviewListWrapper>
-);
-
-const NavigationSidebarWrapper = styled.div`
-  display: flex;
-  flex-flow: column;
-  width: 20%;
-  height: 100%;
-`;
-
-export const NavigationSidebar: React.FC = React.memo(() => (
-  <NavigationSidebarWrapper>
-    <OverviewList />
-  </NavigationSidebarWrapper>
+  </SidebarWrapper>
 ));

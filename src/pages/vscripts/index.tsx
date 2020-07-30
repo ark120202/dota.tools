@@ -1,14 +1,14 @@
 import React from 'react';
 import { RouterHashScroll } from '~utils/scroll';
-import { APIList } from './APIList';
-import { NavigationSidebar } from './NavigationSidebar';
+import { Content } from './Content';
+import { Sidebar } from './Sidebar';
 
 export default function VScriptsPage() {
   return (
     <>
       <RouterHashScroll />
-      <NavigationSidebar />
-      <APIList />
+      <Sidebar />
+      <Content />
     </>
   );
 }

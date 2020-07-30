@@ -8,11 +8,12 @@ import {
 } from 'react-virtualized';
 
 interface Props<T> {
+  className?: string;
   data: T[];
   render(element: T, style?: React.CSSProperties): React.ReactNode;
 }
 
-export function LazyList<T extends any>({ data, render }: Props<T>) {
+export function LazyList<T extends any>({ className, data, render }: Props<T>) {
   const cache = useMemo(() => new CellMeasurerCache({ fixedWidth: true }), [data]);
   const renderRow = useCallback<ListRowRenderer>(
     ({ key, parent, style, index }) => (
@@ -24,7 +25,7 @@ export function LazyList<T extends any>({ data, render }: Props<T>) {
   );
 
   return (
-    <div style={{ flex: 1, overflowX: 'hidden' }}>
+    <div className={className} style={{ flex: 1, overflowX: 'hidden' }}>
       <AutoSizer>
         {size => (
           <List
@@ -43,9 +44,9 @@ export function LazyList<T extends any>({ data, render }: Props<T>) {
   );
 }
 
-export function ScrollableList<T extends any>({ data, render }: Props<T>) {
+export function ScrollableList<T extends any>({ className, data, render }: Props<T>) {
   return (
-    <div style={{ flex: 1, overflowX: 'hidden', overflowY: 'scroll' }}>
+    <div className={className} style={{ flex: 1, overflowX: 'hidden', overflowY: 'scroll' }}>
       {data.map(x => render(x))}
     </div>
   );

@@ -1,27 +1,22 @@
 import api from 'dota-data/files/vscripts/api';
 import React from 'react';
 import styled from 'styled-components';
+import { Field } from './Field';
+import { FunctionDeclaration } from './FunctionDeclaration';
+import { AvailabilityBadge, ElementLink, KindIcon, ReferencesLink } from './utils/components';
 import {
-  AvailabilityBadge,
   CommonGroupHeader,
   CommonGroupMembers,
   CommonGroupSignature,
   CommonGroupWrapper,
   ElementBadges,
-  ElementLink,
-  KindIcon,
   OptionalDescription,
-  ReferencesLink,
-} from '../common';
-import { Field } from '../Field';
-import { Types } from '../types';
-import { FunctionDeclaration } from './FunctionDeclaration';
+} from './utils/styles';
+import { Types } from './utils/types';
 
-const ClassWrapper = styled(CommonGroupWrapper)``;
 const ClassHeader = styled(CommonGroupHeader)`
   padding: 5px;
 `;
-const ClassSignature = styled(CommonGroupSignature)``;
 
 const ClassName = styled.span`
   font-size: 24px;
@@ -54,14 +49,14 @@ export const ClassDeclaration: React.FC<{
   style?: React.CSSProperties;
   declaration: api.ClassDeclaration;
 }> = ({ className, style, declaration }) => (
-  <ClassWrapper className={className} style={style}>
+  <CommonGroupWrapper className={className} style={style}>
     <ClassHeader>
-      <ClassSignature>
+      <CommonGroupSignature>
         <KindIcon kind="class" size="big" />
         <ClassName>{declaration.name}</ClassName>
         &nbsp;
         {declaration.extend && <ClassExtends extend={declaration.extend} />}
-      </ClassSignature>
+      </CommonGroupSignature>
       <ElementBadges>
         <ReferencesLink name={declaration.name} />
         <AvailabilityBadge available={declaration.clientName != null ? 'both' : 'server'} />
@@ -84,5 +79,5 @@ export const ClassDeclaration: React.FC<{
         )}
       </ClassMembers>
     )}
-  </ClassWrapper>
+  </CommonGroupWrapper>
 );

@@ -1,10 +1,10 @@
 import api from 'dota-data/files/vscripts/api';
 import React from 'react';
 import styled from 'styled-components';
-import { CommonGroupMembers, CommonGroupWrapper, KindIcon } from './common';
 import { Field } from './Field';
+import { KindIcon } from './utils/components';
+import { CommonGroupMembers, CommonGroupWrapper } from './utils/styles';
 
-const InterfaceWrapper = styled(CommonGroupWrapper)``;
 const InterfaceHeader = styled.div`
   padding: 4px;
 `;
@@ -21,7 +21,6 @@ const InterfaceDescription = styled.div`
 
 const InterfaceMembers = styled(CommonGroupMembers)`
   > :not(:last-child) {
-    margin-bottom: 1px;
   }
 `;
 
@@ -29,7 +28,7 @@ export const InterfaceDeclaration: React.FC<{
   className?: string;
   declaration: api.InterfaceDeclaration;
 }> = ({ className, declaration }) => (
-  <InterfaceWrapper className={className}>
+  <CommonGroupWrapper className={className}>
     <InterfaceHeader>
       <KindIcon kind="interface" size="small" />
       <InterfaceName>{declaration.name}</InterfaceName>
@@ -44,5 +43,5 @@ export const InterfaceDeclaration: React.FC<{
         ))}
       </InterfaceMembers>
     )}
-  </InterfaceWrapper>
+  </CommonGroupWrapper>
 );

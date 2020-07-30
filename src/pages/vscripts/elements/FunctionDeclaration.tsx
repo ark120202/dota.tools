@@ -1,28 +1,29 @@
 import api from 'dota-data/files/vscripts/api';
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
-import { getInterfacesForTypes } from '../../data';
+import { getInterfacesForTypes } from '../data';
+import { InterfaceDeclaration } from './InterfaceDeclaration';
 import {
   AvailabilityBadge,
+  ElementLink,
+  KindIcon,
+  SearchOnGitHub,
+  SearchOnGoogle,
+  useLinkedElement,
+} from './utils/components';
+import {
   CommonGroupHeader,
   CommonGroupSignature,
   CommonGroupWrapper,
   ElementBadges,
-  ElementLink,
-  KindIcon,
   OptionalDescription,
-  SearchOnGitHub,
-  SearchOnGoogle,
-  useLinkedElement,
-} from '../common';
-import { InterfaceDeclaration } from '../InterfaceDeclaration';
-import { FunctionParameter, Types } from '../types';
+} from './utils/styles';
+import { FunctionParameter, Types } from './utils/types';
 
 const FunctionWrapper = styled(CommonGroupWrapper)`
   padding: 2px 5px;
 `;
 
-const FunctionHeader = styled(CommonGroupHeader)``;
 const FunctionSignature = styled(CommonGroupSignature)`
   margin-bottom: 3px;
 `;
@@ -52,12 +53,10 @@ export const FunctionDeclaration: React.FC<{
 }> = ({ className, style, context, declaration }) => {
   const relatedInterfaces = useMemo(
     () =>
-      declaration.args.flatMap(arg => {
-        const interfaces = getInterfacesForTypes(arg.types);
-        if (interfaces.length === 0) return [];
-        return interfaces.map(x => <InterfaceDeclaration key={x.name} declaration={x} />);
-      }),
-    [],
+      declaration.args
+        .flatMap(arg => getInterfacesForTypes(arg.types))
+        .map(x => <InterfaceDeclaration key={x.name} declaration={x} />),
+    [declaration],
   );
 
   const parameterDescriptions = useMemo(
@@ -66,18 +65,17 @@ export const FunctionDeclaration: React.FC<{
         .filter(arg => arg.description)
         .map(arg => (
           <ParameterDescription key={arg.name}>
-            <code>{arg.name}</code>
-            {` - ${arg.description}`}
+            <code>{arg.name}</code> - {arg.description}
           </ParameterDescription>
         )),
-    [],
+    [declaration],
   );
 
   const isLinked = useLinkedElement({ scope: context, hash: declaration.name });
 
   return (
     <FunctionWrapper className={className} style={style} id={declaration.name} isLinked={isLinked}>
-      <FunctionHeader>
+      <CommonGroupHeader>
         <FunctionSignature>
           <KindIcon kind="function" size="big" />
           {declaration.name}(
@@ -93,7 +91,7 @@ export const FunctionDeclaration: React.FC<{
           <SearchOnGoogle name={declaration.name} />
           {context && <ElementLink scope={context} hash={declaration.name} />}
         </ElementBadges>
-      </FunctionHeader>
+      </CommonGroupHeader>
       {relatedInterfaces.length > 0 && <RelatedInterfaces>{relatedInterfaces}</RelatedInterfaces>}
       <OptionalDescription
         description={

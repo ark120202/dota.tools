@@ -19,6 +19,10 @@ export const CommonGroupMembers = styled.div`
   border-top: 1px solid black;
   background-color: ${colors.mainDark};
   padding: 8px;
+
+  > :not(:last-child) {
+    margin-bottom: 7px;
+  }
 `;
 
 export const CommonGroupHeader = styled.div`
@@ -44,3 +48,12 @@ export const OptionalDescription: React.FC<{
     {description && <div className={className}>{description}</div>}
   </>
 );
+
+export const ElementBadges = styled.div`
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  > * {
+    margin-left: 5px;
+  }
+`;

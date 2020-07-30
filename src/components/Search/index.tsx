@@ -1,9 +1,14 @@
 import { darken } from 'polished';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { colors } from '~utils/constants';
-import { useRouterSearch, useSetSearchQuery } from './search';
 import SearchIcon from './search.svg';
+
+export function useRouterSearch() {
+  const location = useLocation();
+  return new URLSearchParams(location.search).get('search') ?? '';
+}
 
 export function useCtrlFHook<T extends HTMLElement>() {
   const ref = useRef<T | null>(null);
@@ -57,10 +62,34 @@ const SearchButton = styled.button<{ isUpdated: boolean }>`
   }
 `;
 
-export const SearchBox: React.FC<{ className?: string }> = React.memo(({ className }) => {
+export function SearchBox({ baseUrl, className }: { baseUrl: string; className?: string }) {
   const routerSearch = useRouterSearch();
   const [search, setSearch] = useState(routerSearch);
   useEffect(() => setSearch(routerSearch), [routerSearch]);
+
+  const history = useHistory<{ searchReferrer?: string }>();
+
+  const setSearchQuery = useCallback(
+    (query: string) => {
+      const { state, pathname, search: urlSearch } = history.location;
+      if (query === '') {
+        history.push(state?.searchReferrer || baseUrl);
+      } else {
+        const searchReferrer = state?.searchReferrer || `${pathname}${urlSearch}`;
+        history.push(`${baseUrl}?search=${encodeURIComponent(query)}`, { searchReferrer });
+      }
+    },
+    [history, baseUrl],
+  );
+
+  const handleSearchButton = useCallback<React.MouseEventHandler<HTMLButtonElement>>(
+    () => setSearchQuery(search),
+    [search],
+  );
+  const handleSearchButtonMouseDown = useCallback<React.MouseEventHandler<HTMLButtonElement>>(
+    e => e.preventDefault(),
+    [],
+  );
 
   const updateCurrentSearch = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
     ({ target: { value } }) => setSearch(value),
@@ -69,16 +98,6 @@ export const SearchBox: React.FC<{ className?: string }> = React.memo(({ classNa
   const handleKey = useCallback<React.KeyboardEventHandler<HTMLInputElement>>(
     event => event.key === 'Enter' && setSearchQuery(search),
     [search],
-  );
-
-  const setSearchQuery = useSetSearchQuery();
-  const handleSearchButton = useCallback<React.MouseEventHandler<HTMLButtonElement>>(
-    () => setSearchQuery(search),
-    [search],
-  );
-  const handleSearchButtonMouseDown = useCallback<React.MouseEventHandler<HTMLButtonElement>>(
-    e => e.preventDefault(),
-    [],
   );
 
   const ref = useCtrlFHook<HTMLInputElement>();
@@ -103,4 +122,4 @@ export const SearchBox: React.FC<{ className?: string }> = React.memo(({ classNa
       </SearchButton>
     </SearchBoxWrapper>
   );
-});
+}
