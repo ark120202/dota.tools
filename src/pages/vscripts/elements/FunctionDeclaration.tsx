@@ -1,7 +1,7 @@
 import api from 'dota-data/files/vscripts/api';
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
-import { getInterfacesForTypes } from '../data';
+import { getInterfacesForFunction } from '../data';
 import { InterfaceDeclaration } from './InterfaceDeclaration';
 import {
   AvailabilityBadge,
@@ -53,9 +53,9 @@ export const FunctionDeclaration: React.FC<{
 }> = ({ className, style, context, declaration }) => {
   const relatedInterfaces = useMemo(
     () =>
-      declaration.args
-        .flatMap(arg => getInterfacesForTypes(arg.types))
-        .map(x => <InterfaceDeclaration key={x.name} declaration={x} />),
+      getInterfacesForFunction(declaration).map(x => (
+        <InterfaceDeclaration key={x.name} declaration={x} />
+      )),
     [declaration],
   );
 

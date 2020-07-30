@@ -37,21 +37,18 @@ export const useFilteredData = () => {
 const interfaces = _.fromPairs(
   api.filter((x): x is api.InterfaceDeclaration => x.kind === 'interface').map(x => [x.name, x]),
 );
-export function getInterfacesForTypes(types: api.Type[]): api.InterfaceDeclaration[] {
-  const unpackedTypes = types.map(type =>
-    typeof type === 'object' && 'array' in type ? type.array : type,
-  ) as Exclude<api.Type, api.ArrayType>[];
 
-  return _.union(
-    unpackedTypes
-      .filter(_.isString)
-      .map(type => interfaces[type])
-      .filter(type => type != null),
-    ...unpackedTypes
-      .filter((x): x is api.FunctionType => typeof x === 'object')
-      .map(func => getInterfacesForTypes([..._.flatMap(func.args, x => x.types), ...func.returns])),
-  );
-}
+const overrideInterfaces: Record<string, string[]> = {
+  TraceCollideable: ['TraceCollideableOutputs'],
+  TraceHull: ['TraceHullOutputs'],
+  TraceLine: ['TraceLineOutputs'],
+};
+
+export const getInterfacesForFunction = (func: api.FunctionDeclaration) =>
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  (overrideInterfaces[func.name] ?? getFuncDeepTypes(func))
+    .map(type => interfaces[type])
+    .filter(type => type != null);
 
 const AVAILABILITY_PATTERN = /^-?on:(client|server)$/;
 const ABSTRACT_METHOD_PATTERN = /^-?is:abstract$/;
