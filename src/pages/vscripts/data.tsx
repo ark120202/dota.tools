@@ -54,11 +54,16 @@ export function getInterfacesForTypes(types: api.Type[]): api.InterfaceDeclarati
 }
 
 const AVAILABILITY_PATTERN = /^-?on:(client|server)$/;
+const ABSTRACT_METHOD_PATTERN = /^-?is:abstract$/;
 
 export function doSearch(words: string[]) {
   const availabilityWords = words.filter(x => AVAILABILITY_PATTERN.test(x));
+  const abstractMethodWords = words.filter(x => ABSTRACT_METHOD_PATTERN.test(x));
   const typeWords = words.filter(x => x.startsWith('type:')).map(x => x.replace(/^type:/, ''));
-  const nameWords = words.filter(x => !x.startsWith('type:') && !AVAILABILITY_PATTERN.test(x));
+  const nameWords = words.filter(
+    x =>
+      !x.startsWith('type:') && !AVAILABILITY_PATTERN.test(x) && !ABSTRACT_METHOD_PATTERN.test(x),
+  );
 
   function filterAvailability(member: { available: api.Availability } | {}) {
     if (availabilityWords.length === 0) return undefined;
@@ -73,6 +78,13 @@ export function doSearch(words: string[]) {
     }
 
     return !availabilityWords.includes('-on:server') && !availabilityWords.includes('-on:client');
+  }
+
+  function filterAbstractMethod(member: api.ClassMember) {
+    if (abstractMethodWords.length === 0) return undefined;
+
+    const isAbstract = member.kind === 'function' && member.abstract === true;
+    return abstractMethodWords.includes('-is:abstract') ? !isAbstract : isAbstract;
   }
 
   function filterMemberType(member: api.ClassMember) {
@@ -115,7 +127,12 @@ export function doSearch(words: string[]) {
           ? {
               ...declaration,
               members: declaration.members.filter(
-                composeFilters([filterName, filterAvailability, filterMemberType]),
+                composeFilters([
+                  filterName,
+                  filterAbstractMethod,
+                  filterAvailability,
+                  filterMemberType,
+                ]),
               ),
             }
           : declaration.kind === 'enum'

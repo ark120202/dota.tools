@@ -49,7 +49,7 @@ export const FunctionDeclaration: React.FC<{
   className?: string;
   style?: React.CSSProperties;
   context?: string;
-  declaration: api.FunctionDeclaration;
+  declaration: api.ClassMethod;
 }> = ({ className, style, context, declaration }) => {
   const relatedInterfaces = useMemo(
     () =>
@@ -78,7 +78,13 @@ export const FunctionDeclaration: React.FC<{
       <CommonGroupHeader>
         <FunctionSignature>
           <KindIcon kind="function" size="big" />
-          {declaration.name}(
+          {declaration.name}
+          {declaration.abstract && (
+            <span title="Abstract: this method does not exist on the class, but it can be implemented on subclass">
+              ?
+            </span>
+          )}
+          (
           {declaration.args.map((x, i) => [
             <FunctionParameter key={x.name} name={x.name} types={x.types} />,
             i === declaration.args.length - 1 ? null : ', ',
