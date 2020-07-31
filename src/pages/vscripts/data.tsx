@@ -1,15 +1,11 @@
 import api from 'dota-data/files/vscripts/api';
+import apiTypes from 'dota-data/files/vscripts/api-types';
 import enums from 'dota-data/files/vscripts/enums';
-import { allData, getFuncDeepTypes } from 'dota-data/lib/helpers/vscripts';
+import { allData, AllDataType, getFuncDeepTypes } from 'dota-data/lib/helpers/vscripts';
 import _ from 'lodash';
 import { useParams } from 'react-router-dom';
 import { useRouterSearch } from '~components/Search';
 import { isNotNil } from '~utils/types';
-
-export type Declaration = typeof topLevelData[number];
-export const topLevelData = allData.filter(
-  <T extends { kind: string }>(x: T | api.InterfaceDeclaration): x is T => x.kind !== 'interface',
-);
 
 export const useFilteredData = () => {
   const search = useRouterSearch();
@@ -19,23 +15,23 @@ export const useFilteredData = () => {
     return { data: doSearch(search.toLowerCase().split(' ')), isSearching: true };
   }
 
-  let data: Declaration[];
+  let data: AllDataType[];
   switch (scope) {
     case 'functions':
-      data = topLevelData.filter(x => x.kind === 'function');
+      data = allData.filter(x => x.kind === 'function');
       break;
     case 'constants':
-      data = topLevelData.filter(x => x.kind === 'constant');
+      data = allData.filter(x => x.kind === 'constant');
       break;
     default:
-      data = topLevelData.filter(x => x.name === scope);
+      data = allData.filter(x => x.name === scope);
   }
 
   return { data, isSearching: false };
 };
 
-const interfaces = _.fromPairs(
-  api.filter((x): x is api.InterfaceDeclaration => x.kind === 'interface').map(x => [x.name, x]),
+const objectTypes = _.fromPairs(
+  apiTypes.filter((x): x is apiTypes.Object => x.kind === 'object').map(x => [x.name, x]),
 );
 
 const overrideInterfaces: Record<string, string[]> = {
@@ -44,10 +40,10 @@ const overrideInterfaces: Record<string, string[]> = {
   TraceLine: ['TraceLineOutputs'],
 };
 
-export const getInterfacesForFunction = (func: api.FunctionDeclaration) =>
+export const getReferencesForFunction = (func: api.FunctionDeclaration) =>
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   (overrideInterfaces[func.name] ?? getFuncDeepTypes(func))
-    .map(type => interfaces[type])
+    .map(type => objectTypes[type])
     .filter(type => type != null);
 
 const AVAILABILITY_PATTERN = /^-?on:(client|server)$/;
@@ -93,7 +89,7 @@ export function doSearch(words: string[]) {
     return typeWords.every(type => types.some(x => x.includes(type)));
   }
 
-  function filterDeclarationType(declaration: Declaration) {
+  function filterDeclarationType(declaration: AllDataType) {
     if (typeWords.length === 0) return undefined;
 
     return (
@@ -117,7 +113,7 @@ export function doSearch(words: string[]) {
     return false;
   };
 
-  return topLevelData
+  return allData
     .map(declaration => {
       const partialDeclaration: api.ClassDeclaration | enums.Enum | undefined =
         declaration.kind === 'class'

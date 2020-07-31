@@ -1,10 +1,10 @@
+import { allData } from 'dota-data/lib/helpers/vscripts';
 import { darken } from 'polished';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { IconKind, KindIcon } from '~components/KindIcon';
 import { colors } from '~utils/constants';
-import { topLevelData } from './data';
 
 const SidebarLink = styled(NavLink)`
   padding: 2px;
@@ -50,7 +50,7 @@ export const Sidebar = React.memo(() => (
   <SidebarWrapper>
     <SidebarElement to="functions" icon="function" text="Functions" />
     <SidebarElement to="constants" icon="constant" text="Constants" />
-    {topLevelData
+    {allData
       .filter(x => x.kind === 'class' || x.kind === 'enum')
       .map(({ name, kind }) => (
         <SidebarElement key={name} to={name} icon={kind} text={name} />

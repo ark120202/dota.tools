@@ -1,8 +1,8 @@
 import api from 'dota-data/files/vscripts/api';
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
-import { getInterfacesForFunction } from '../data';
-import { InterfaceDeclaration } from './InterfaceDeclaration';
+import { getReferencesForFunction } from '../data';
+import { ObjectType } from './ObjectType';
 import {
   AvailabilityBadge,
   ElementLink,
@@ -28,7 +28,7 @@ const FunctionSignature = styled(CommonGroupSignature)`
   margin-bottom: 3px;
 `;
 
-const RelatedInterfaces = styled.div`
+const ObjectReferences = styled.div`
   margin: 0 25px;
 `;
 
@@ -51,11 +51,9 @@ export const FunctionDeclaration: React.FC<{
   context?: string;
   declaration: api.ClassMethod;
 }> = ({ className, style, context, declaration }) => {
-  const relatedInterfaces = useMemo(
+  const objectReferences = useMemo(
     () =>
-      getInterfacesForFunction(declaration).map(x => (
-        <InterfaceDeclaration key={x.name} declaration={x} />
-      )),
+      getReferencesForFunction(declaration).map(x => <ObjectType key={x.name} declaration={x} />),
     [declaration],
   );
 
@@ -98,7 +96,7 @@ export const FunctionDeclaration: React.FC<{
           {context && <ElementLink scope={context} hash={declaration.name} />}
         </ElementBadges>
       </CommonGroupHeader>
-      {relatedInterfaces.length > 0 && <RelatedInterfaces>{relatedInterfaces}</RelatedInterfaces>}
+      {objectReferences.length > 0 && <ObjectReferences>{objectReferences}</ObjectReferences>}
       <OptionalDescription
         description={
           (declaration.description || parameterDescriptions.length > 0) && (

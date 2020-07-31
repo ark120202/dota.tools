@@ -1,4 +1,5 @@
 import api from 'dota-data/files/vscripts/api';
+import apiTypes from 'dota-data/files/vscripts/api-types';
 import React from 'react';
 import styled from 'styled-components';
 import { ElementLink, KindIcon, useLinkedElement } from './utils/components';
@@ -21,7 +22,7 @@ const FieldSignature = styled(CommonGroupSignature)`
 export const Field: React.FC<{
   className?: string;
   context?: string;
-  element: api.Field;
+  element: api.Field | apiTypes.ObjectField;
 }> = ({ className, context, element }) => {
   const isLinked = useLinkedElement({ scope: context, hash: element.name });
   return (

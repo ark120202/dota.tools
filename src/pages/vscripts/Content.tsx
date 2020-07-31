@@ -1,8 +1,9 @@
+import { AllDataType } from 'dota-data/lib/helpers/vscripts';
 import React from 'react';
 import styled from 'styled-components';
 import { LazyList, ScrollableList } from '~components/Lists';
 import { SearchBox } from '~components/Search';
-import { Declaration, useFilteredData } from './data';
+import { useFilteredData } from './data';
 import { ClassDeclaration } from './elements/ClassDeclaration';
 import { Constant } from './elements/Constant';
 import { Enum } from './elements/Enum';
@@ -54,7 +55,7 @@ const ListItem = styled.div`
   }
 `;
 
-function renderItem(declaration: Declaration, style?: React.CSSProperties) {
+function renderItem(declaration: AllDataType, style?: React.CSSProperties) {
   let children: JSX.Element;
   switch (declaration.kind) {
     case 'class':

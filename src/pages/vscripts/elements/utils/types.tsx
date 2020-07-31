@@ -25,8 +25,12 @@ const TypeReferenceLink = styled(NavLink)`
 const TypeReference: React.FC<{ name: string }> = ({ name }) => {
   const [kind, scope, hash] = useMemo((): [ColoredSyntaxKind, string?, string?] => {
     if (name === 'nil') return ['nil'];
+
     const type = findTypeByName(name);
-    if (!type) return ['literal'];
+    if (!type || type.kind === 'primitive' || type.kind === 'nominal') {
+      return ['literal'];
+    }
+
     return [
       'interface',
       type.kind === 'class' || type.kind === 'enum'
