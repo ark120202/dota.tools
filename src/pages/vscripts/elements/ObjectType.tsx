@@ -27,6 +27,7 @@ export const ObjectType: React.FC<{
     <ObjectHeader>
       <KindIcon kind="interface" size="small" />
       <ObjectName>{declaration.name}</ObjectName>
+      {declaration.extend && <> extends {declaration.extend.join(', ')}</>}
     </ObjectHeader>
     {declaration.description && <ObjectDescription>{declaration.description}</ObjectDescription>}
     {declaration.fields.length > 0 && (

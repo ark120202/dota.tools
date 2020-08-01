@@ -30,6 +30,12 @@ const FunctionSignature = styled(CommonGroupSignature)`
 
 const ObjectReferences = styled.div`
   margin: 0 25px;
+  margin-bottom: 7px;
+
+  > :not(:last-child) {
+    margin-bottom: 7px;
+    box-sizing: border-box;
+  }
 `;
 
 const ParameterDescription = styled.li`

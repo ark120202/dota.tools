@@ -2,7 +2,6 @@ import api from 'dota-data/files/vscripts/api';
 import apiTypes from 'dota-data/files/vscripts/api-types';
 import enums from 'dota-data/files/vscripts/enums';
 import { allData, AllDataType, getFuncDeepTypes } from 'dota-data/lib/helpers/vscripts';
-import _ from 'lodash';
 import { useParams } from 'react-router-dom';
 import { useRouterSearch } from '~components/Search';
 import { isNotNil } from '~utils/types';
@@ -30,21 +29,30 @@ export const useFilteredData = () => {
   return { data, isSearching: false };
 };
 
-const objectTypes = _.fromPairs(
-  apiTypes.filter((x): x is apiTypes.Object => x.kind === 'object').map(x => [x.name, x]),
-);
-
-const overrideInterfaces: Record<string, string[]> = {
+const overrideReferences: Record<string, string[]> = {
   TraceCollideable: ['TraceCollideableOutputs'],
   TraceHull: ['TraceHullOutputs'],
   TraceLine: ['TraceLineOutputs'],
 };
 
-export const getReferencesForFunction = (func: api.FunctionDeclaration) =>
+export function getReferencesForFunction(func: api.FunctionDeclaration) {
+  const allReferences = new Set<apiTypes.Object>();
+
+  function addReference(name: string) {
+    const reference = apiTypes.find(t => t.name === name);
+    if (!reference || reference.kind !== 'object') return;
+
+    allReferences.add(reference);
+    for (const extendedType of reference.extend ?? []) {
+      addReference(extendedType);
+    }
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  (overrideInterfaces[func.name] ?? getFuncDeepTypes(func))
-    .map(type => objectTypes[type])
-    .filter(type => type != null);
+  (overrideReferences[func.name] ?? getFuncDeepTypes(func)).forEach(addReference);
+
+  return [...allReferences];
+}
 
 const AVAILABILITY_PATTERN = /^-?on:(client|server)$/;
 const ABSTRACT_METHOD_PATTERN = /^-?is:abstract$/;
