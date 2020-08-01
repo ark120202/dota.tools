@@ -26,7 +26,14 @@ export default (env: Record<string, any> = {}, argv: Configuration): Configurati
     presets: [
       '@babel/preset-typescript',
       '@babel/preset-react',
-      ['@babel/preset-env', { loose: true }],
+      [
+        '@babel/preset-env',
+        {
+          loose: true,
+          targets: ['last 1 chrome version', 'last 1 firefox version'],
+          include: ['proposal-nullish-coalescing-operator', 'proposal-optional-chaining'],
+        },
+      ],
     ],
   };
 
