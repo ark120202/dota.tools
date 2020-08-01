@@ -59,15 +59,15 @@ export const FunctionDeclaration: React.FC<{
 }> = ({ className, style, context, declaration }) => {
   const objectReferences = useMemo(
     () =>
-      getReferencesForFunction(declaration).map(x => <ObjectType key={x.name} declaration={x} />),
+      getReferencesForFunction(declaration).map((x) => <ObjectType key={x.name} declaration={x} />),
     [declaration],
   );
 
   const parameterDescriptions = useMemo(
     () =>
       declaration.args
-        .filter(arg => arg.description)
-        .map(arg => (
+        .filter((arg) => arg.description)
+        .map((arg) => (
           <ParameterDescription key={arg.name}>
             <code>{arg.name}</code> - {arg.description}
           </ParameterDescription>

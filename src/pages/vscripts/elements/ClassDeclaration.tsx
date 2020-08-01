@@ -66,7 +66,7 @@ export const ClassDeclaration: React.FC<{
     <ClassDescription description={declaration.description} />
     {declaration.members.length > 0 && (
       <ClassMembers>
-        {declaration.members.map(member =>
+        {declaration.members.map((member) =>
           member.kind === 'field' ? (
             <Field key={member.name} element={member} context={declaration.name} />
           ) : (

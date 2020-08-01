@@ -9,6 +9,6 @@ const coloredSyntaxColors = {
 };
 
 export const getSyntaxColorFor = (kind: ColoredSyntaxKind) => coloredSyntaxColors[kind];
-export const ColoredSyntax: React.FC<{ kind: ColoredSyntaxKind }> = props => (
+export const ColoredSyntax: React.FC<{ kind: ColoredSyntaxKind }> = (props) => (
   <span style={{ color: getSyntaxColorFor(props.kind) }}>{props.children}</span>
 );

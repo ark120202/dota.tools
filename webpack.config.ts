@@ -9,7 +9,7 @@ import path from 'path';
 import { Configuration } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 // Required to augment `Configuration`
-import {} from 'webpack-dev-server';
+import type {} from 'webpack-dev-server';
 
 const resolve = (name: string) => path.resolve(__dirname, name);
 const tsconfigPath = resolve('src/tsconfig.json');
@@ -73,7 +73,7 @@ export default (env: Record<string, any> = {}, argv: Configuration): Configurati
 
     plugins: [
       new CaseSensitivePathsPlugin(),
-      new ForkTsCheckerWebpackPlugin({ tsconfig: tsconfigPath, async: !isProduction }),
+      new ForkTsCheckerWebpackPlugin({ typescript: { configFile: tsconfigPath } }),
 
       new CleanWebpackPlugin(),
       new CopyWebpackPlugin({ patterns: [resolve('public')] }),

@@ -27,7 +27,7 @@ export function LazyList<T extends any>({ className, data, render }: Props<T>) {
   return (
     <div className={className} style={{ flex: 1, overflowX: 'hidden' }}>
       <AutoSizer>
-        {size => (
+        {(size) => (
           <List
             style={{ overflowX: 'hidden' }}
             {...size}
@@ -47,7 +47,7 @@ export function LazyList<T extends any>({ className, data, render }: Props<T>) {
 export function ScrollableList<T extends any>({ className, data, render }: Props<T>) {
   return (
     <div className={className} style={{ flex: 1, overflowX: 'hidden', overflowY: 'scroll' }}>
-      {data.map(x => render(x))}
+      {data.map((x) => render(x))}
     </div>
   );
 }

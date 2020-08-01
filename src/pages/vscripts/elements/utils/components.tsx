@@ -22,9 +22,9 @@ const AvailabilityBadgeBox = styled.div<{ color: string; active: boolean }>`
   height: 20px;
   text-align: center;
   user-select: none;
-  background: radial-gradient(${props => props.color}, ${props => darken(0.22, props.color)});
+  background: radial-gradient(${(props) => props.color}, ${(props) => darken(0.22, props.color)});
 
-  ${props =>
+  ${(props) =>
     !props.active &&
     css`
       box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.7);

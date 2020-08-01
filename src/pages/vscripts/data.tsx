@@ -17,13 +17,13 @@ export const useFilteredData = () => {
   let data: AllDataType[];
   switch (scope) {
     case 'functions':
-      data = allData.filter(x => x.kind === 'function');
+      data = allData.filter((x) => x.kind === 'function');
       break;
     case 'constants':
-      data = allData.filter(x => x.kind === 'constant');
+      data = allData.filter((x) => x.kind === 'constant');
       break;
     default:
-      data = allData.filter(x => x.name === scope);
+      data = allData.filter((x) => x.name === scope);
   }
 
   return { data, isSearching: false };
@@ -39,7 +39,7 @@ export function getReferencesForFunction(func: api.FunctionDeclaration) {
   const allReferences = new Set<apiTypes.Object>();
 
   function addReference(name: string) {
-    const reference = apiTypes.find(t => t.name === name);
+    const reference = apiTypes.find((t) => t.name === name);
     if (!reference || reference.kind !== 'object') return;
 
     allReferences.add(reference);
@@ -58,11 +58,11 @@ const AVAILABILITY_PATTERN = /^-?on:(client|server)$/;
 const ABSTRACT_METHOD_PATTERN = /^-?is:abstract$/;
 
 export function doSearch(words: string[]) {
-  const availabilityWords = words.filter(x => AVAILABILITY_PATTERN.test(x));
-  const abstractMethodWords = words.filter(x => ABSTRACT_METHOD_PATTERN.test(x));
-  const typeWords = words.filter(x => x.startsWith('type:')).map(x => x.replace(/^type:/, ''));
+  const availabilityWords = words.filter((x) => AVAILABILITY_PATTERN.test(x));
+  const abstractMethodWords = words.filter((x) => ABSTRACT_METHOD_PATTERN.test(x));
+  const typeWords = words.filter((x) => x.startsWith('type:')).map((x) => x.replace(/^type:/, ''));
   const nameWords = words.filter(
-    x =>
+    (x) =>
       !x.startsWith('type:') && !AVAILABILITY_PATTERN.test(x) && !ABSTRACT_METHOD_PATTERN.test(x),
   );
 
@@ -91,10 +91,11 @@ export function doSearch(words: string[]) {
   function filterMemberType(member: api.ClassMember) {
     if (typeWords.length === 0) return undefined;
 
-    const types = (member.kind === 'function' ? getFuncDeepTypes(member) : member.types).map(type =>
-      type.toLowerCase(),
-    );
-    return typeWords.every(type => types.some(x => x.includes(type)));
+    const types = (member.kind === 'function'
+      ? getFuncDeepTypes(member)
+      : member.types
+    ).map((type) => type.toLowerCase());
+    return typeWords.every((type) => types.some((x) => x.includes(type)));
   }
 
   function filterDeclarationType(declaration: AllDataType) {
@@ -111,18 +112,18 @@ export function doSearch(words: string[]) {
     if (nameWords.length === 0) return undefined;
 
     const name = member.name.toLowerCase();
-    return nameWords.every(word => name.includes(word));
+    return nameWords.every((word) => name.includes(word));
   }
 
   const composeFilters = <T,>(filters: ((member: T) => boolean | undefined)[]) => (value: T) => {
-    const results = filters.map(fn => fn(value));
+    const results = filters.map((fn) => fn(value));
     if (results.includes(false)) return false;
     if (results.includes(true)) return true;
     return false;
   };
 
   return allData
-    .map(declaration => {
+    .map((declaration) => {
       const partialDeclaration: api.ClassDeclaration | enums.Enum | undefined =
         declaration.kind === 'class'
           ? {

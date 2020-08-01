@@ -32,7 +32,7 @@ export const ObjectType: React.FC<{
     {declaration.description && <ObjectDescription>{declaration.description}</ObjectDescription>}
     {declaration.fields.length > 0 && (
       <CommonGroupMembers>
-        {declaration.fields.map(field => (
+        {declaration.fields.map((field) => (
           <Field key={field.name} element={field} />
         ))}
       </CommonGroupMembers>

@@ -16,7 +16,7 @@ const EnumMemberWrapper = styled(CommonGroupWrapper)`
   padding: 2px 5px;
 `;
 
-const EnumMember: React.FC<api.EnumMember> = props => (
+const EnumMember: React.FC<api.EnumMember> = (props) => (
   <EnumMemberWrapper>
     <CommonGroupHeader>
       <CommonGroupSignature>
@@ -56,7 +56,7 @@ export const Enum: React.FC<{
     <OptionalDescription description={element.description} />
     {element.members.length > 0 && (
       <EnumMembers>
-        {element.members.map(member => (
+        {element.members.map((member) => (
           <EnumMember key={member.name} {...member} />
         ))}
       </EnumMembers>

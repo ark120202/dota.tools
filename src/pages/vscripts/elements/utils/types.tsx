@@ -82,11 +82,11 @@ export const FunctionParameter: React.FC<{ name: string; types: api.Type[] }> = 
   </span>
 );
 
-const FunctionType: React.FC<api.FunctionType> = props => (
+const FunctionType: React.FC<api.FunctionType> = (props) => (
   <span>
     (
-    {props.args.map(x => (
-      <FunctionParameter key={x.name} {...x} />
+    {props.args.map((arg) => (
+      <FunctionParameter key={arg.name} {...arg} />
     ))}
     ) <FunctionArrowIcon /> <Types types={props.returns} />
   </span>

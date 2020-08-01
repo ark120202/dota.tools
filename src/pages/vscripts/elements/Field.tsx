@@ -32,7 +32,7 @@ export const Field: React.FC<{
           <KindIcon kind="field" size="big" />
           {element.name}
           {element.types.includes('nil') && '?'}:{' '}
-          {<Types types={element.types.filter(x => x !== 'nil')} />}
+          {<Types types={element.types.filter((x) => x !== 'nil')} />}
         </FieldSignature>
         <ElementBadges>
           {context && <ElementLink scope={context} hash={element.name} />}

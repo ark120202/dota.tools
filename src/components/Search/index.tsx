@@ -87,7 +87,7 @@ export function SearchBox({ baseUrl, className }: { baseUrl: string; className?:
     [search],
   );
   const handleSearchButtonMouseDown = useCallback<React.MouseEventHandler<HTMLButtonElement>>(
-    e => e.preventDefault(),
+    (event) => event.preventDefault(),
     [],
   );
 
@@ -96,7 +96,7 @@ export function SearchBox({ baseUrl, className }: { baseUrl: string; className?:
     [],
   );
   const handleKey = useCallback<React.KeyboardEventHandler<HTMLInputElement>>(
-    event => event.key === 'Enter' && setSearchQuery(search),
+    (event) => event.key === 'Enter' && setSearchQuery(search),
     [search],
   );
 

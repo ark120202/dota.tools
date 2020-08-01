@@ -51,7 +51,7 @@ export const Sidebar = React.memo(() => (
     <SidebarElement to="functions" icon="function" text="Functions" />
     <SidebarElement to="constants" icon="constant" text="Constants" />
     {allData
-      .filter(x => x.kind === 'class' || x.kind === 'enum')
+      .filter((x) => x.kind === 'class' || x.kind === 'enum')
       .map(({ name, kind }) => (
         <SidebarElement key={name} to={name} icon={kind} text={name} />
       ))}
