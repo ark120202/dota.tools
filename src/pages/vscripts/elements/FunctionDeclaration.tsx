@@ -18,7 +18,7 @@ import {
   ElementBadges,
   OptionalDescription,
 } from './utils/styles';
-import { FunctionParameter, Types } from './utils/types';
+import { FunctionParameters, Types } from './utils/types';
 
 const FunctionWrapper = styled(CommonGroupWrapper)`
   padding: 2px 5px;
@@ -88,12 +88,9 @@ export const FunctionDeclaration: React.FC<{
               ?
             </span>
           )}
-          (
-          {declaration.args.map((x, i) => [
-            <FunctionParameter key={x.name} name={x.name} types={x.types} />,
-            i === declaration.args.length - 1 ? null : ', ',
-          ])}
-          ):&nbsp;{<Types types={declaration.returns} />}
+          <FunctionParameters args={declaration.args} />
+          :&nbsp;
+          {<Types types={declaration.returns} />}
         </FunctionSignature>
         <ElementBadges>
           <AvailabilityBadge available={declaration.available} />

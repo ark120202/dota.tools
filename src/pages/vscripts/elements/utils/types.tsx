@@ -1,18 +1,19 @@
-import api from 'dota-data/files/vscripts/api';
-import { findTypeByName } from 'dota-data/lib/helpers/vscripts';
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import arrowIconUrl from '!!file-loader!./arrow.svg';
+import api from 'dota-data/files/vscripts/api';
+import { findTypeByName } from 'dota-data/lib/helpers/vscripts';
 import React, { useMemo } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { ColoredSyntax, ColoredSyntaxKind, getSyntaxColorFor } from '~components/ColoredSyntax';
+import { intersperse } from '~utils/types';
 
 export const Types: React.FC<{ types: api.Type[] }> = ({ types }) => (
   <>
-    {types.map((type, index) => [
-      <Type key={index} type={type} />,
-      types.length - 1 !== index && ' | ',
-    ])}
+    {intersperse(
+      types.map((type, index) => <Type key={index} type={type} />),
+      ' | ',
+    )}
   </>
 );
 
@@ -72,25 +73,31 @@ const Type: React.FC<{ type: api.Type }> = ({ type }) =>
     <FunctionType {...type} />
   );
 
-export const FunctionParameter: React.FC<{ name: string; types: api.Type[] }> = ({
-  name,
-  types,
-}) => (
+const FunctionParameter: React.FC<{ name: string; types: api.Type[] }> = ({ name, types }) => (
   <span>
     <ColoredSyntax kind="parameter">{name}</ColoredSyntax>:&nbsp;
     <Types types={types} />
   </span>
 );
 
-const FunctionType: React.FC<api.FunctionType> = (props) => (
+export function FunctionParameters({ args }: { args: api.FunctionParameter[] }) {
+  return (
+    <>
+      (
+      {intersperse(
+        args.map((arg) => <FunctionParameter key={arg.name} {...arg} />),
+        ', ',
+      )}
+      )
+    </>
+  );
+}
+
+const FunctionType: React.FC<api.FunctionType> = ({ args, returns }) => (
   <span>
-    (
-    {props.args.map((arg) => (
-      <FunctionParameter key={arg.name} {...arg} />
-    ))}
-    )
+    <FunctionParameters args={args} />
     <ArrowIcon />
-    <Types types={props.returns} />
+    <Types types={returns} />
   </span>
 );
 
