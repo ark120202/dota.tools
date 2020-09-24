@@ -1,11 +1,11 @@
 import api from 'dota-data/files/vscripts/api';
 import { findTypeByName } from 'dota-data/lib/helpers/vscripts';
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import arrowIconUrl from '!!file-loader!./arrow.svg';
 import React, { useMemo } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { ColoredSyntax, ColoredSyntaxKind, getSyntaxColorFor } from '~components/ColoredSyntax';
-import { colors } from '~utils/constants';
-import ArrowIcon from './arrow.svg';
 
 export const Types: React.FC<{ types: api.Type[] }> = ({ types }) => (
   <>
@@ -88,12 +88,20 @@ const FunctionType: React.FC<api.FunctionType> = (props) => (
     {props.args.map((arg) => (
       <FunctionParameter key={arg.name} {...arg} />
     ))}
-    ) <FunctionArrowIcon /> <Types types={props.returns} />
+    )
+    <ArrowIcon />
+    <Types types={props.returns} />
   </span>
 );
 
-const FunctionArrowIcon = styled(ArrowIcon).attrs({ height: 17, width: 28 })`
-  path {
-    fill: ${colors.text};
-  }
+const ArrowIconWrapper = styled.span`
+  /* Using spaces instead of margin to include spaces in copied text */
+  word-spacing: -1px;
 `;
+
+const ArrowIcon = () => (
+  <ArrowIconWrapper>
+    {' '}
+    <img src={arrowIconUrl} height={14} alt="=>" />{' '}
+  </ArrowIconWrapper>
+);
