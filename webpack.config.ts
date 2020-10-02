@@ -73,7 +73,10 @@ export default (env: Record<string, any> = {}, argv: Configuration): Configurati
 
     plugins: [
       new CaseSensitivePathsPlugin(),
-      new ForkTsCheckerWebpackPlugin({ typescript: { configFile: tsconfigPath } }),
+      new ForkTsCheckerWebpackPlugin({
+        typescript: { configFile: tsconfigPath },
+        logger: { devServer: false },
+      }),
 
       new CleanWebpackPlugin(),
       new CopyWebpackPlugin({ patterns: [resolve('public')] }),

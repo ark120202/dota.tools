@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-webpack-loader-syntax
 import arrowIconUrl from '!!file-loader!./arrow.svg';
 import api from 'dota-data/files/vscripts/api';
 import { findTypeByName } from 'dota-data/lib/helpers/vscripts';

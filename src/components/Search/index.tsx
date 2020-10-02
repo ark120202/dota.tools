@@ -67,7 +67,8 @@ export function SearchBox({ baseUrl, className }: { baseUrl: string; className?:
   const [search, setSearch] = useState(routerSearch);
   useEffect(() => setSearch(routerSearch), [routerSearch]);
 
-  const history = useHistory<{ searchReferrer?: string }>();
+  // TODO: Location.state should be nullable
+  const history = useHistory<{ searchReferrer?: string } | null>();
 
   const setSearchQuery = useCallback(
     (query: string) => {
