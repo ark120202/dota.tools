@@ -4,8 +4,9 @@ import { findTypeByName } from 'dota-data/lib/helpers/vscripts';
 import React, { useMemo } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+import invariant from 'tiny-invariant';
 import { ColoredSyntax, ColoredSyntaxKind, getSyntaxColorFor } from '~components/ColoredSyntax';
-import { intersperse } from '~utils/types';
+import { assertNever, intersperse } from '~utils/types';
 
 export const Types: React.FC<{ types: api.Type[] }> = ({ types }) => (
   <>
@@ -16,18 +17,35 @@ export const Types: React.FC<{ types: api.Type[] }> = ({ types }) => (
   </>
 );
 
+const Type: React.FC<{ type: api.Type }> = ({ type }) => {
+  if (typeof type === 'string') return <ReferenceType name={type} />;
+  switch (type.kind) {
+    case 'array':
+      return <ArrayType type={type} />;
+    case 'function':
+      return <FunctionType type={type} />;
+    case 'literal':
+      return <LiteralType type={type} />;
+    case 'table':
+      return <TableType type={type} />;
+    default:
+      assertNever(type);
+  }
+};
+
 const TypeReferenceLink = styled(NavLink)`
   &.active {
     text-decoration: none;
   }
 `;
 
-const TypeReference: React.FC<{ name: string }> = ({ name }) => {
+const ReferenceType: React.FC<{ name: string }> = ({ name }) => {
   const [kind, scope, hash] = useMemo((): [ColoredSyntaxKind, string?, string?] => {
     if (name === 'nil') return ['nil'];
 
     const type = findTypeByName(name);
-    if (!type || type.kind === 'primitive' || type.kind === 'nominal') {
+    invariant(type !== undefined, `Invalid type reference: ${name}`);
+    if (type.kind === 'primitive' || type.kind === 'nominal') {
       return ['literal'];
     }
 
@@ -57,25 +75,31 @@ const TypeReference: React.FC<{ name: string }> = ({ name }) => {
   );
 };
 
-const ArrayType: React.FC<{ type: api.Type }> = ({ type }) => (
+const LiteralType: React.FC<{ type: api.LiteralType }> = ({ type: { value } }) => (
   <span>
-    [<Type type={type} />]
+    <ColoredSyntax kind="literal">{value}</ColoredSyntax>
   </span>
 );
 
-const Type: React.FC<{ type: api.Type }> = ({ type }) =>
-  typeof type === 'string' ? (
-    <TypeReference name={type} />
-  ) : 'array' in type ? (
-    <ArrayType type={type.array} />
-  ) : (
-    <FunctionType {...type} />
-  );
-
-const FunctionParameter: React.FC<{ name: string; types: api.Type[] }> = ({ name, types }) => (
+const ArrayType: React.FC<{ type: api.ArrayType }> = ({ type: { types } }) => (
   <span>
-    <ColoredSyntax kind="parameter">{name}</ColoredSyntax>:&nbsp;
-    <Types types={types} />
+    [<Types types={types} />]
+  </span>
+);
+
+const TableType: React.FC<{ type: api.TableType }> = ({ type: { key, value } }) => (
+  <span>
+    {'{'} [
+    <Types types={key} />
+    ]: <Types types={value} /> {'}'}
+  </span>
+);
+
+const FunctionType: React.FC<{ type: api.FunctionType }> = ({ type: { args, returns } }) => (
+  <span>
+    <FunctionParameters args={args} />
+    <ArrowIcon />
+    <Types types={returns} />
   </span>
 );
 
@@ -92,11 +116,10 @@ export function FunctionParameters({ args }: { args: api.FunctionParameter[] }) 
   );
 }
 
-const FunctionType: React.FC<api.FunctionType> = ({ args, returns }) => (
+const FunctionParameter: React.FC<{ name: string; types: api.Type[] }> = ({ name, types }) => (
   <span>
-    <FunctionParameters args={args} />
-    <ArrowIcon />
-    <Types types={returns} />
+    <ColoredSyntax kind="parameter">{name}</ColoredSyntax>:&nbsp;
+    <Types types={types} />
   </span>
 );
 

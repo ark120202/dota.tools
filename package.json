@@ -36,14 +36,15 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/react-virtualized": "^9.21.10",
     "@types/styled-components": "^5.1.3",
-    "dota-data": "0.11.0",
+    "dota-data": "0.12.2",
     "lodash": "^4.17.20",
     "polished": "^3.6.7",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "react-virtualized": "^9.22.2",
-    "styled-components": "^5.2.0"
+    "styled-components": "^5.2.0",
+    "tiny-invariant": "^1.1.0"
   },
   "devDependencies": {
     "@ark120202/eslint-config": "^2.5.0",
