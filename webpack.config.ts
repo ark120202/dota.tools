@@ -91,7 +91,6 @@ export default (env: Record<string, any> = {}, argv: Configuration): Configurati
     ],
 
     devServer: {
-      stats: 'minimal',
       port: 3000,
       hot: true,
       historyApiFallback: true,
