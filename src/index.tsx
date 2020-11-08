@@ -3,6 +3,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
+import { HashScrollHandler } from '~components/ElementLink';
 import { NavBar } from '~components/layout/NavBar';
 import { colors } from '~utils/constants';
 import { AppRoutes } from './pages';
@@ -37,13 +38,6 @@ const GlobalStyle = (() => {
   `;
 })();
 
-const PageContent = styled.div`
-  display: flex;
-  flex: 1;
-  flex-flow: row;
-  height: 100%;
-`;
-
 const AppWrapper = styled.div`
   display: flex;
   flex-flow: column;
@@ -54,12 +48,19 @@ const AppWrapper = styled.div`
   color: ${colors.text};
 `;
 
+const PageContent = styled.div`
+  display: flex;
+  flex: 1;
+  min-height: 0;
+`;
+
 function App() {
   return (
     <AppWrapper>
       <GlobalStyle />
-      <NavBar />
       <BrowserRouter>
+        <HashScrollHandler />
+        <NavBar />
         <PageContent>
           <React.Suspense fallback={null}>
             <AppRoutes />

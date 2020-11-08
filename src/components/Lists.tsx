@@ -13,7 +13,7 @@ interface Props<T> {
   render(element: T, style?: React.CSSProperties): React.ReactNode;
 }
 
-export function LazyList<T extends any>({ className, data, render }: Props<T>) {
+export function LazyList<T>({ className, data, render }: Props<T>) {
   const cache = useMemo(() => new CellMeasurerCache({ fixedWidth: true }), [data]);
   const renderRow = useCallback<ListRowRenderer>(
     ({ key, parent, style, index }) => (
@@ -44,7 +44,7 @@ export function LazyList<T extends any>({ className, data, render }: Props<T>) {
   );
 }
 
-export function ScrollableList<T extends any>({ className, data, render }: Props<T>) {
+export function ScrollableList<T>({ className, data, render }: Props<T>) {
   return (
     <div className={className} style={{ flex: 1, overflowX: 'hidden', overflowY: 'scroll' }}>
       {data.map((x) => render(x))}

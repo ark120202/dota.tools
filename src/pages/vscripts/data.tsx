@@ -3,10 +3,10 @@ import apiTypes from 'dota-data/files/vscripts/api-types';
 import enums from 'dota-data/files/vscripts/enums';
 import { allData, AllDataType, getFuncDeepTypes } from 'dota-data/lib/helpers/vscripts';
 import { useParams } from 'react-router-dom';
-import { useRouterSearch } from '~components/Search';
+import { composeFilters, useRouterSearch } from '~components/Search';
 import { isNotNil } from '~utils/types';
 
-export const useFilteredData = () => {
+export function useFilteredData() {
   const search = useRouterSearch();
   const { scope = '' } = useParams<{ scope?: string }>();
 
@@ -27,7 +27,7 @@ export const useFilteredData = () => {
   }
 
   return { data, isSearching: false };
-};
+}
 
 const overrideReferences: Record<string, string[]> = {
   TraceCollideable: ['TraceCollideableOutputs'],
@@ -114,13 +114,6 @@ export function doSearch(words: string[]) {
     const name = member.name.toLowerCase();
     return nameWords.every((word) => name.includes(word));
   }
-
-  const composeFilters = <T,>(filters: ((member: T) => boolean | undefined)[]) => (value: T) => {
-    const results = filters.map((fn) => fn(value));
-    if (results.includes(false)) return false;
-    if (results.includes(true)) return true;
-    return false;
-  };
 
   return allData
     .map((declaration) => {

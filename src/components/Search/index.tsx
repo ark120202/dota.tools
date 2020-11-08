@@ -5,6 +5,15 @@ import styled from 'styled-components';
 import { colors } from '~utils/constants';
 import SearchIcon from './search.svg';
 
+export const composeFilters = <T,>(filters: ((member: T) => boolean | undefined)[]) => (
+  value: T,
+) => {
+  const results = filters.map((fn) => fn(value));
+  if (results.includes(false)) return false;
+  if (results.includes(true)) return true;
+  return false;
+};
+
 export function useRouterSearch() {
   const location = useLocation();
   return new URLSearchParams(location.search).get('search') ?? '';

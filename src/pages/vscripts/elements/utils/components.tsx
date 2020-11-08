@@ -1,13 +1,22 @@
 import { Availability } from 'dota-data/files/vscripts/api';
 import { darken, lighten } from 'polished';
 import React, { useMemo } from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import styled, { css } from 'styled-components';
+import {
+  ElementLink as RawElementLink,
+  useLinkedElement as useLinkedElementRaw,
+} from '~components/ElementLink';
 import { KindIcon as UnstyledKindIcon } from '~components/KindIcon';
 import { colors } from '~utils/constants';
 import { doSearch } from '../../data';
 import SearchGitHubIcon from './search-github.svg';
 import SearchGoogleIcon from './search-google.svg';
+
+export const useLinkedElement = useLinkedElementRaw.bind(undefined, '/vscripts');
+export function ElementLink({ scope, hash }: { scope: string; hash?: string }) {
+  return <RawElementLink root="/vscripts" scope={scope} hash={hash} />;
+}
 
 export const KindIcon = styled(UnstyledKindIcon)`
   margin-bottom: -4px;
@@ -119,30 +128,3 @@ export const ReferencesLink: React.FC<{ name: string }> = ({ name }) => {
     </StyledReferencesLink>
   );
 };
-
-const StyledElementLink = styled(Link)`
-  margin-right: 2px;
-  font-size: 30px;
-  line-height: 1;
-  text-decoration: none;
-  color: ${colors.text};
-  user-select: none;
-  font-family: Arial, Helvetica, sans-serif;
-`;
-
-export const ElementLink: React.FC<{ scope: string; hash?: string }> = ({ scope, hash }) => {
-  const urlHash = hash ? `#${hash}` : '';
-  return (
-    <StyledElementLink to={`/vscripts/${scope}${urlHash}`} title="Link">
-      #
-    </StyledElementLink>
-  );
-};
-
-export function useLinkedElement({ scope, hash }: { scope?: string; hash?: string }) {
-  const urlHash = hash ? `#${hash}` : '';
-  const location = useLocation();
-  return (
-    scope !== undefined && location.pathname === `/vscripts/${scope}` && location.hash === urlHash
-  );
-}

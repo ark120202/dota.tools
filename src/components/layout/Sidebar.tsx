@@ -1,10 +1,10 @@
-import { allData } from 'dota-data/lib/helpers/vscripts';
 import { darken } from 'polished';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { IconKind, KindIcon } from '~components/KindIcon';
 import { colors } from '~utils/constants';
+import { intersperseWith } from '~utils/types';
 
 const SidebarLink = styled(NavLink)`
   padding: 2px;
@@ -26,18 +26,30 @@ const SidebarLink = styled(NavLink)`
   }
 `;
 
-const SidebarElement: React.FC<{
+const SidebarKindIcon = styled(KindIcon)`
+  vertical-align: ${({ kind }) => (kind === 'interface' ? 'middle' : 'baseline')};
+`;
+
+const insertWordBreaks = (text: string, separator: string) => (
+  <>{intersperseWith(text.split(separator), (index) => [separator, <wbr key={index} />])}</>
+);
+
+export const SidebarElement: React.FC<{
   to: string;
   icon: IconKind;
   text: string;
-}> = React.memo(({ to, icon, text }) => (
-  <SidebarLink to={`/vscripts/${to}`}>
-    <KindIcon kind={icon} size="small" /> {text}
+  textSeparator?: string;
+  extra?: React.ReactNode;
+}> = React.memo(({ to, icon, text, textSeparator, extra }) => (
+  <SidebarLink to={to}>
+    <SidebarKindIcon kind={icon} size="small" />{' '}
+    {textSeparator !== undefined ? insertWordBreaks(text, textSeparator) : text}
+    {extra}
   </SidebarLink>
 ));
 
-const SidebarWrapper = styled.div`
-  width: 20%;
+export const SidebarWrapper = styled.div`
+  width: 340px;
   height: 100%;
   box-sizing: border-box;
   display: flex;
@@ -45,15 +57,3 @@ const SidebarWrapper = styled.div`
   overflow-y: scroll;
   padding: 4px 6px;
 `;
-
-export const Sidebar = React.memo(() => (
-  <SidebarWrapper>
-    <SidebarElement to="functions" icon="function" text="Functions" />
-    <SidebarElement to="constants" icon="constant" text="Constants" />
-    {allData
-      .filter((x) => x.kind === 'class' || x.kind === 'enum')
-      .map(({ name, kind }) => (
-        <SidebarElement key={name} to={name} icon={kind} text={name} />
-      ))}
-  </SidebarWrapper>
-));
