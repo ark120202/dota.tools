@@ -3,7 +3,6 @@ import React from 'react';
 import { render } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
-import { HashScrollHandler } from '~components/ElementLink';
 import { NavBar } from '~components/layout/NavBar';
 import { colors } from '~utils/constants';
 import { AppRoutes } from './pages';
@@ -59,7 +58,6 @@ function App() {
     <AppWrapper>
       <GlobalStyle />
       <BrowserRouter>
-        <HashScrollHandler />
         <NavBar />
         <PageContent>
           <React.Suspense fallback={null}>

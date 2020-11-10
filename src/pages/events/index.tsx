@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { HashScrollHandler } from '~components/ElementLink';
 import { SidebarElement, SidebarWrapper } from '~components/layout/Sidebar';
 import { Content } from './Content';
 import { events } from './data';
@@ -27,6 +28,7 @@ const Sidebar = () => (
 export default function EventsPage() {
   return (
     <>
+      <HashScrollHandler />
       <Sidebar />
       <Content />
     </>
